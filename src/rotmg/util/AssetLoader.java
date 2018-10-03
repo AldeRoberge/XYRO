@@ -169,6 +169,8 @@ public class AssetLoader {
 		AnimatedChars.add("mountainTempleChars16x16", "mountainTempleChars16x16Embed_", null, 16, 16, 112, 16, AnimatedChar.RIGHT);
 		AnimatedChars.add("oryxHordeChars8x8", "oryxHordeChars8x8Embed_", null, 8, 8, 56, 8, AnimatedChar.RIGHT);
 		AnimatedChars.add("oryxHordeChars16x16", "oryxHordeChars16x16Embed_", null, 16, 16, 112, 16, AnimatedChar.RIGHT);
+		AnimatedChars.add("battleOryxChars8x8", "battleOryxChars8x8Embed_", null, 8, 8, 56, 8, AnimatedChar.RIGHT);
+		AnimatedChars.add("battleOryxChars16x16", "battleOryxChars16x16Embed_", null, 16, 16, 112, 16, AnimatedChar.RIGHT);
 		AnimatedChars.add("santaWorkshopChars8x8", "santaWorkshopChars8x8Embed_", null, 8, 8, 56, 8, AnimatedChar.RIGHT);
 		AnimatedChars.add("santaWorkshopChars16x16", "santaWorkshopChars16x16Embed_", null, 16, 16, 112, 16, AnimatedChar.RIGHT);
 		AnimatedChars.add("Hanami8x8chars", "Hanami8x8charsEmbed_", null, 8, 8, 64, 8, AnimatedChar.RIGHT);
@@ -227,7 +229,6 @@ public class AssetLoader {
 			RegionLibrary.parseFromXML(loc1);
 		}
 	}
-
 
 }
 
@@ -290,7 +291,6 @@ class EmbeddedData {
 		models.put("Pet Upgrader Obj", "petUpgrader_");
 	}
 
-
 	/**
 	 * I kept the names (objectFiles, groundFiles) but there is only really 1 file for each type.
 	 * Se we return a list with only one XML.
@@ -313,7 +313,6 @@ class EmbeddedData {
 	public static Vector<XML> regionFiles() { //Region
 		return new Vector<>(getXML(getDocument("/xml/regions.xml")));
 	}
-
 
 	private static XML getXML(Document d) {
 		return new XML(d.getDocumentElement());
