@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../GitHub/AldeCommons/AldeCommons.iml" filepath="$PROJECT_DIR$/../GitHub/AldeCommons/AldeCommons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XYRO.iml" filepath="$PROJECT_DIR$/XYRO.iml" />
+    </modules>
+  </component>
+</project>
