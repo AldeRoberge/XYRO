@@ -1,8 +1,5 @@
 package rotmg.net;
 
-/**
- * This is almost a complete match, except that Number was changed to double instead of double
- */
 public class LatLong {
 
 	private static final double TO_DEGREES = 180 / Math.PI;
