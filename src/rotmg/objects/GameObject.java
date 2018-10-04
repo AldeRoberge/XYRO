@@ -17,9 +17,6 @@ import rotmg.objects.animation.AnimationsData;
 import rotmg.parameters.Parameters;
 import rotmg.sound.SoundEffectLibrary;
 import rotmg.stage3D.graphic3D.Object3DStage3D;
-import rotmg.text.view.BitmapTextFactory;
-import rotmg.text.view.stringBuilder.StaticStringBuilder;
-import rotmg.text.view.stringBuilder.StringBuilder;
 import rotmg.util.AssetLibrary;
 import rotmg.util.BitmapUtil;
 import rotmg.util.ConditionEffect;
@@ -286,8 +283,7 @@ public class GameObject extends BasicObject {
 	}
 
 	public boolean isStunImmune() {
-		return (this.condition.get(ConditionEffect.CE_FIRST_BATCH) & ConditionEffect.STUN_IMMUNE_BIT) != 0
-				|| this.isStunImmune;
+		return (this.condition.get(ConditionEffect.CE_FIRST_BATCH) & ConditionEffect.STUN_IMMUNE_BIT) != 0 || this.isStunImmune;
 	}
 
 	public boolean isInvisible() {
@@ -331,8 +327,7 @@ public class GameObject extends BasicObject {
 	}
 
 	public boolean isStasisImmune() {
-		return this.isStasisImmune
-				|| (this.condition.get(ConditionEffect.CE_FIRST_BATCH) & ConditionEffect.STASIS_IMMUNE_BIT) != 0;
+		return this.isStasisImmune || (this.condition.get(ConditionEffect.CE_FIRST_BATCH) & ConditionEffect.STASIS_IMMUNE_BIT) != 0;
 	}
 
 	public boolean isInvincible() {
@@ -372,13 +367,11 @@ public class GameObject extends BasicObject {
 	}
 
 	public boolean isParalyzeImmune() {
-		return this.isParalyzeImmune
-				|| (this.condition.get(ConditionEffect.CE_SECOND_BATCH) & ConditionEffect.PARALYZED_IMMUNE_BIT) != 0;
+		return this.isParalyzeImmune || (this.condition.get(ConditionEffect.CE_SECOND_BATCH) & ConditionEffect.PARALYZED_IMMUNE_BIT) != 0;
 	}
 
 	public boolean isDazedImmune() {
-		return this.isDazedImmune
-				|| (this.condition.get(ConditionEffect.CE_SECOND_BATCH) & ConditionEffect.DAZED_IMMUNE_BIT) != 0;
+		return this.isDazedImmune || (this.condition.get(ConditionEffect.CE_SECOND_BATCH) & ConditionEffect.DAZED_IMMUNE_BIT) != 0;
 	}
 
 	public boolean isPetrified() {
@@ -402,8 +395,7 @@ public class GameObject extends BasicObject {
 	}
 
 	public String getName() {
-		return this.name == null || this.name.equals("") ? ObjectLibrary.typeToDisplayId.get(this.objectType)
-				: this.name;
+		return this.name == null || this.name.equals("") ? ObjectLibrary.typeToDisplayId.get(this.objectType) : this.name;
 	}
 
 	public int getColor() {
@@ -536,6 +528,10 @@ public class GameObject extends BasicObject {
 			System.out.println(" Map.gs.gsc:" + map.gs.gsc);
 			System.out.println(" map.gs.gsc.lastTickId:" + map.gs.gsc.lastTickId);**/
 
+			if (map == null) {
+				System.out.println("Null object type : " + objectType);
+			}
+
 			if (this.myLastTickId < map.gs.gsc.lastTickId) {
 				this.moveTo(this.tickPosition.x, this.tickPosition.y);
 			}
@@ -557,8 +553,7 @@ public class GameObject extends BasicObject {
 		damage(param1, param2, param3, param4, param5, false);
 	}
 
-	public void damage(boolean param1, int param2, Vector<Integer> param3, boolean param4, Projectile param5,
-			boolean param6) {
+	public void damage(boolean param1, int param2, Vector<Integer> param3, boolean param4, Projectile param5, boolean param6) {
 
 	}
 
@@ -572,12 +567,6 @@ public class GameObject extends BasicObject {
 
 	public void showDamageText(int param1, boolean param2) {
 
-	}
-
-	protected BitmapData makeNameBitmapData() {
-		StringBuilder loc1 = new StaticStringBuilder(this.name);
-		BitmapTextFactory loc2 = BitmapTextFactory.getInstance();
-		return loc2.make(loc1, 16, 16777215, true, IDENTITY_MATRIX, true);
 	}
 
 	protected BitmapData getHallucinatingTexture() {
@@ -604,11 +593,8 @@ public class GameObject extends BasicObject {
 	}
 
 	private boolean bHPBarParamCheck() {
-		return Parameters.data.HPBar != 0
-				&& (Parameters.data.HPBar == 1 || Parameters.data.HPBar == 2 && this.props.isEnemy
-						|| Parameters.data.HPBar == 3 && (this == map.player || this.props.isEnemy)
-						|| Parameters.data.HPBar == 4 && this == map.player
-						|| Parameters.data.HPBar == 5 && this.props.isPlayer);
+		return Parameters.data.HPBar != 0 && (Parameters.data.HPBar == 1 || Parameters.data.HPBar == 2 && this.props.isEnemy || Parameters.data.HPBar == 3 && (this == map.player || this.props.isEnemy)
+				|| Parameters.data.HPBar == 4 && this == map.player || Parameters.data.HPBar == 5 && this.props.isPlayer);
 	}
 
 	public void clearTextureCache() {
@@ -616,7 +602,6 @@ public class GameObject extends BasicObject {
 	}
 
 	public String toString() {
-		return "[" + this.getClass().getSimpleName() + " id: " + objectId + " type: "
-				+ ObjectLibrary.typeToDisplayId.get(this.objectType) + " pos: " + x + ", " + y + "]";
+		return "[" + this.getClass().getSimpleName() + " id: " + objectId + " type: " + ObjectLibrary.typeToDisplayId.get(this.objectType) + " pos: " + x + ", " + y + "]";
 	}
 }

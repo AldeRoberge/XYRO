@@ -5,13 +5,12 @@ import rotmg.AGameSprite;
 import rotmg.account.core.services.GetCharListTask;
 import rotmg.appengine.SavedCharacter;
 import rotmg.core.model.PlayerModel;
-import rotmg.lib.tasks.impl.SocketServerModel;
 import rotmg.lib.tasks.tasks.TaskMonitor;
 import rotmg.model.GameInitData;
 import rotmg.net.Server;
 import rotmg.parameters.Parameters;
 import rotmg.pets.data.PetsModel;
-import rotmg.servers.api.ServerModel;
+import rotmg.xyro.Servers;
 
 public class PlayGameCommand {
 
@@ -23,27 +22,26 @@ public class PlayGameCommand {
 
 	public PetsModel petsModel;
 
-	public ServerModel servers;
+	public Servers servers;
 
 	public GetCharListTask task;
 
 	public TaskMonitor monitor;
-
-	public SocketServerModel socketServerModel;
 
 	public PlayGameCommand() {
 		super();
 		data = GameInitData.getInstance();
 		model = PlayerModel.getInstance();
 		petsModel = PetsModel.getInstance();
-		servers = ServerModel.getInstance();
+		servers = Servers.getInstance();
 		task = GetCharListTask.getInstance();
 		monitor = TaskMonitor.getInstance();
 	}
 
 	public void execute() {
 		if (!this.data.isNewGame) {
-			this.socketServerModel.connectDelayMS = PlayGameCommand.RECONNECT_DELAY;
+			/*this.socketServerModel.connectDelayMS = PlayGameCommand.RECONNECT_DELAY;
+			public int connectDelayMS;**/
 		}
 		this.recordCharacterUseInSharedObject();
 		this.makeGameView();
@@ -73,7 +71,7 @@ public class PlayGameCommand {
 		if (this.data.server != null) {
 			loc1 = this.data.server;
 		} else {
-			loc1 = this.servers.getServer();
+			loc1 = this.servers.getBestServer();
 		}
 
 		int loc2 = this.data.isNewGame ? this.getInitialGameId() : this.data.gameId;

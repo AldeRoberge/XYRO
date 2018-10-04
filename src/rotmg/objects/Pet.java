@@ -7,7 +7,6 @@ import rotmg.AGameSprite;
 import rotmg.objects.animation.AnimatedChar;
 import rotmg.pets.data.PetVO;
 import rotmg.pets.data.PetsModel;
-import rotmg.signals.TextPanelMessageUpdateSignal;
 import rotmg.util.AnimatedChars;
 import rotmg.util.MaskedImage;
 
@@ -18,13 +17,11 @@ public class Pet extends GameObject implements IInteractiveObject {
 	public AnimatedChar defaultSkin;
 	public int skinId;
 	public boolean isDefaultAnimatedChar = false;
-	private TextPanelMessageUpdateSignal textPanelUpdateSignal;
 	private PetsModel petsModel;
 
 	public Pet(XML param1) {
 		super(param1);
 		isInteractive = true;
-		this.textPanelUpdateSignal = TextPanelMessageUpdateSignal.getInstance();
 		this.petsModel = PetsModel.getInstance();
 		this.petsModel.getActivePet();
 	}

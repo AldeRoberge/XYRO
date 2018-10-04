@@ -22,8 +22,6 @@ import rotmg.classes.model.CharacterClass;
 import rotmg.classes.model.ClassesModel;
 import rotmg.constants.GeneralConstants;
 import rotmg.constants.ItemConstants;
-import rotmg.death.control.HandleDeathSignal;
-import rotmg.death.control.ZombifySignal;
 import rotmg.events.KeyInfoResponseSignal;
 import rotmg.events.ReconnectEvent;
 import rotmg.map.AbstractMap;
@@ -138,8 +136,6 @@ import rotmg.objects.Player;
 import rotmg.objects.Projectile;
 import rotmg.objects.SellableObject;
 import rotmg.parameters.Parameters;
-import rotmg.signals.AddSpeechBalloonSignal;
-import rotmg.signals.GiftStatusUpdateSignal;
 import rotmg.sound.SoundEffectLibrary;
 import rotmg.util.ConditionEffect;
 import rotmg.util.ConversionUtil;
@@ -152,37 +148,24 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	private int playerId = -1;
 	private Player player;
 	private boolean retryConnection = true;
-	private GiftStatusUpdateSignal giftChestUpdateSignal;
-	private Death death;
 	private Timer retryTimer;
-	private int delayBeforeReconnect = 2;
-	private AddSpeechBalloonSignal addSpeechBalloon;
-	private HandleDeathSignal handleDeath;
-	private ZombifySignal zombify;
 	private KeyInfoResponseSignal keyInfoResponse;
 	private ClassesModel classesModel;
 	private GameModel model;
 
-	private long startTime = 0; // this is currently not set
 	private int delayBeforeReconect;
 
-	public GameServerConnectionConcrete(AGameSprite gs, Server server, int gameId, boolean createCharacter, int charId,
-			int keyTime, byte[] key, byte[] mapJSON, boolean isFromArena) {
+	public GameServerConnectionConcrete(AGameSprite gs, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, byte[] mapJSON, boolean isFromArena) {
 		super();
 
 		System.out.println("GameSprite : " + gs);
 
-		this.giftChestUpdateSignal = GiftStatusUpdateSignal.getInstance();
-		this.addSpeechBalloon = AddSpeechBalloonSignal.getInstance();
 		this.changeMapSignal = ChangeMapSignal.getInstance();
 		this.keyInfoResponse = KeyInfoResponseSignal.getInstance();
-		this.handleDeath = HandleDeathSignal.getInstance();
-		this.zombify = ZombifySignal.getInstance();
 		this.classesModel = ClassesModel.getInstance();
 		serverConnection = SocketServer.getInstance();
 		this.messages = MessageCenter.getInstance();
 		this.model = GameModel.getInstance();
-		/*this.currentArenaRun = CurrentArenaRunModel.getInstance();*/
 		this.gs = gs;
 		this.server = server;
 		this.gameId = gameId;
@@ -191,32 +174,18 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		this.keyTime = keyTime;
 		this.key = key;
 		this.mapJSON = mapJSON;
-		this.isFromArena = isFromArena;/*this.friendModel.setCurrentServer(server);
-										this.getPetUpdater();*/
+		this.isFromArena = isFromArena;
 		instance = this;
 	}
 
 	private static boolean isStatPotion(int param1) {
-		return param1 == 2591 || param1 == 5465 || param1 == 9064
-				|| (param1 == 2592 || param1 == 5466 || param1 == 9065)
-				|| (param1 == 2593 || param1 == 5467 || param1 == 9066)
-				|| (param1 == 2612 || param1 == 5468 || param1 == 9067)
-				|| (param1 == 2613 || param1 == 5469 || param1 == 9068)
-				|| (param1 == 2636 || param1 == 5470 || param1 == 9069)
-				|| (param1 == 2793 || param1 == 5471 || param1 == 9070)
-				|| (param1 == 2794 || param1 == 5472 || param1 == 9071)
-				|| (param1 == 9724 || param1 == 9725 || param1 == 9726 || param1 == 9727 || param1 == 9728
-						|| param1 == 9729 || param1 == 9730 || param1 == 9731);
+		return param1 == 2591 || param1 == 5465 || param1 == 9064 || (param1 == 2592 || param1 == 5466 || param1 == 9065) || (param1 == 2593 || param1 == 5467 || param1 == 9066)
+				|| (param1 == 2612 || param1 == 5468 || param1 == 9067) || (param1 == 2613 || param1 == 5469 || param1 == 9068) || (param1 == 2636 || param1 == 5470 || param1 == 9069)
+				|| (param1 == 2793 || param1 == 5471 || param1 == 9070) || (param1 == 2794 || param1 == 5472 || param1 == 9071)
+				|| (param1 == 9724 || param1 == 9725 || param1 == 9726 || param1 == 9727 || param1 == 9728 || param1 == 9729 || param1 == 9730 || param1 == 9731);
 	}
 
-	//private function getPetUpdater()
-
-	//public void disconnect()
-
-	// removeServerConnectionListeners()
-
 	public void connect() {
-		//this.addServerConnectionListeners();
 		this.mapMessages();
 
 		System.out.println("Connecting to " + server.name + ".");
@@ -224,14 +193,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 		onConnected();
 	}
-
-	/**
-	 * private void addServerConnectionListeners() {
-	 * serverConnection.connected.add(this::onConnected);
-	 * serverConnection.closed.add(this::onClosed);
-	 * serverConnection.error.add(this::onError);
-	 * }
-	 */
 
 	public void mapMessages() {
 		MessageCenter loc1 = MessageCenter.getInstance();
@@ -283,13 +244,11 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		loc1.map(CLAIM_LOGIN_REWARD_MSG).toMessage(ClaimDailyRewardMessage.class);
 		loc1.map(FAILURE).toMessage(Failure.class).toMethod(new MessageConsumer<>(this::onFailure));
 		loc1.map(CREATE_SUCCESS).toMessage(CreateSuccess.class).toMethod(new MessageConsumer<>(this::onCreateSuccess));
-		loc1.map(SERVERPLAYERSHOOT).toMessage(ServerPlayerShoot.class)
-				.toMethod(new MessageConsumer<>(this::onServerPlayerShoot));
+		loc1.map(SERVERPLAYERSHOOT).toMessage(ServerPlayerShoot.class).toMethod(new MessageConsumer<>(this::onServerPlayerShoot));
 		loc1.map(DAMAGE).toMessage(Damage.class).toMethod(new MessageConsumer<>(this::onDamage));
 		loc1.map(UPDATE).toMessage(Update.class).toMethod(new MessageConsumer<>(this::onUpdate));
 		loc1.map(NOTIFICATION).toMessage(Notification.class).toMethod(new MessageConsumer<>(this::onNotification));
-		loc1.map(GLOBAL_NOTIFICATION).toMessage(GlobalNotification.class)
-				.toMethod(new MessageConsumer<>(this::onGlobalNotification));
+		loc1.map(GLOBAL_NOTIFICATION).toMessage(GlobalNotification.class).toMethod(new MessageConsumer<>(this::onGlobalNotification));
 		loc1.map(NEWTICK).toMessage(NewTick.class).toMethod(new MessageConsumer<>(this::onNewTick));
 		loc1.map(SHOWEFFECT).toMessage(ShowEffect.class).toMethod(new MessageConsumer<>(this::onShowEffect));
 		loc1.map(GOTO).toMessage(Goto.class).toMethod(new MessageConsumer<>(this::onGoto));
@@ -307,39 +266,30 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		loc1.map(GUILDRESULT).toMessage(GuildResult.class).toMethod(new MessageConsumer<>(this::onGuildResult));
 		loc1.map(ALLYSHOOT).toMessage(AllyShoot.class).toMethod(new MessageConsumer<>(this::onAllyShoot));
 		loc1.map(ENEMYSHOOT).toMessage(EnemyShoot.class).toMethod(new MessageConsumer<>(this::onEnemyShoot));
-		loc1.map(TRADEREQUESTED).toMessage(TradeRequested.class)
-				.toMethod(new MessageConsumer<>(this::onTradeRequested));
+		loc1.map(TRADEREQUESTED).toMessage(TradeRequested.class).toMethod(new MessageConsumer<>(this::onTradeRequested));
 		loc1.map(TRADESTART).toMessage(TradeStart.class).toMethod(new MessageConsumer<>(this::onTradeStart));
 		loc1.map(TRADECHANGED).toMessage(TradeChanged.class).toMethod(new MessageConsumer<>(this::onTradeChanged));
 		loc1.map(TRADEDONE).toMessage(TradeDone.class).toMethod(new MessageConsumer<>(this::onTradeDone));
 		loc1.map(TRADEACCEPTED).toMessage(TradeAccepted.class).toMethod(new MessageConsumer<>(this::onTradeAccepted));
 		loc1.map(CLIENTSTAT).toMessage(ClientStat.class).toMethod(new MessageConsumer<>(this::onClientStat));
 		loc1.map(FILE).toMessage(File.class).toMethod(new MessageConsumer<>(this::onFile));
-		loc1.map(INVITEDTOGUILD).toMessage(InvitedToGuild.class)
-				.toMethod(new MessageConsumer<>(this::onInvitedToGuild));
+		loc1.map(INVITEDTOGUILD).toMessage(InvitedToGuild.class).toMethod(new MessageConsumer<>(this::onInvitedToGuild));
 		loc1.map(ACTIVEPETUPDATE).toMessage(ActivePet.class).toMethod(new MessageConsumer<>(this::onActivePetUpdate));
 		loc1.map(NEW_ABILITY).toMessage(NewAbilityMessage.class).toMethod(new MessageConsumer<>(this::onNewAbility));
 		loc1.map(PETYARDUPDATE).toMessage(PetYard.class).toMethod(new MessageConsumer<>(this::onPetYardUpdate));
 		loc1.map(EVOLVE_PET).toMessage(EvolvedPetMessage.class).toMethod(new MessageConsumer<>(this::onEvolvedPet));
 		loc1.map(DELETE_PET).toMessage(DeletePetMessage.class).toMethod(new MessageConsumer<>(this::onDeletePet));
 		loc1.map(HATCH_PET).toMessage(HatchPetMessage.class).toMethod(new MessageConsumer<>(this::onHatchPet));
-		loc1.map(IMMINENT_ARENA_WAVE).toMessage(ImminentArenaWave.class)
-				.toMethod(new MessageConsumer<>(this::onImminentArenaWave));
+		loc1.map(IMMINENT_ARENA_WAVE).toMessage(ImminentArenaWave.class).toMethod(new MessageConsumer<>(this::onImminentArenaWave));
 		loc1.map(ARENA_DEATH).toMessage(ArenaDeath.class).toMethod(new MessageConsumer<>(this::onArenaDeath));
 		loc1.map(VERIFY_EMAIL).toMessage(VerifyEmail.class).toMethod(new MessageConsumer<>(this::onVerifyEmail));
 		loc1.map(RESKIN_UNLOCK).toMessage(ReskinUnlock.class).toMethod(new MessageConsumer<>(this::onReskinUnlock));
-		loc1.map(PASSWORD_PROMPT).toMessage(PasswordPrompt.class)
-				.toMethod(new MessageConsumer<>(this::onPasswordPrompt));
-		loc1.map(QUEST_FETCH_RESPONSE).toMessage(QuestFetchResponse.class)
-				.toMethod(new MessageConsumer<>(this::onQuestFetchResponse));
-		loc1.map(QUEST_REDEEM_RESPONSE).toMessage(QuestRedeemResponse.class)
-				.toMethod(new MessageConsumer<>(this::onQuestRedeemResponse));
-		loc1.map(KEY_INFO_RESPONSE).toMessage(KeyInfoResponse.class)
-				.toMethod(new MessageConsumer<>(this::onKeyInfoResponse));
-		loc1.map(LOGIN_REWARD_MSG).toMessage(ClaimDailyRewardResponse.class)
-				.toMethod(new MessageConsumer<>(this::onLoginRewardResponse));
-		loc1.map(GameServerConnection.RESKIN).toMessage(Reskin.class);
-
+		loc1.map(PASSWORD_PROMPT).toMessage(PasswordPrompt.class).toMethod(new MessageConsumer<>(this::onPasswordPrompt));
+		loc1.map(QUEST_FETCH_RESPONSE).toMessage(QuestFetchResponse.class).toMethod(new MessageConsumer<>(this::onQuestFetchResponse));
+		loc1.map(QUEST_REDEEM_RESPONSE).toMessage(QuestRedeemResponse.class).toMethod(new MessageConsumer<>(this::onQuestRedeemResponse));
+		loc1.map(KEY_INFO_RESPONSE).toMessage(KeyInfoResponse.class).toMethod(new MessageConsumer<>(this::onKeyInfoResponse));
+		loc1.map(LOGIN_REWARD_MSG).toMessage(ClaimDailyRewardResponse.class).toMethod(new MessageConsumer<>(this::onLoginRewardResponse));
+		loc1.map(RESKIN).toMessage(Reskin.class);
 		loc1.map(TEXT).toMessage(Text.class).toMethod(new MessageConsumer<>(this::onText));
 
 	}
@@ -371,7 +321,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	private void encryptConnection() {
 		serverConnection.setOutgoingCipher(new ICipher("6a39570cc9de4ec71d64821894"));
 		serverConnection.setIncomingCipher(new ICipher("c79332b197f92ba85ed281a023"));
-
 	}
 
 	/**
@@ -401,10 +350,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		System.out.println(load);
 
 		serverConnection.sendMessage(load);
-
-		/*if (isFromArena) {
-		 this.openDialog.dispatch(new BattleSummaryDialog());
-		 }*/
 	}
 
 	public void playerShoot(int time, Projectile proj) {
@@ -479,8 +424,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		this.serverConnection.sendMessage(playerTextMessage);
 	}
 
-	public boolean invSwap(Player player, GameObject sourceObj, int slotId1, int itemId, GameObject targetObj,
-			int slotId2, int objectType2) {
+	public boolean invSwap(Player player, GameObject sourceObj, int slotId1, int itemId, GameObject targetObj, int slotId2, int objectType2) {
 		if (this.gs == null) {
 			return false;
 		}
@@ -503,8 +447,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	@Override
-	public boolean invSwapPotion(Player player, GameObject sourceObj, int slotId1, int itemId, GameObject targetObj,
-			int slotId2, int objectType2) {
+	public boolean invSwapPotion(Player player, GameObject sourceObj, int slotId1, int itemId, GameObject targetObj, int slotId2, int objectType2) {
 		if (this.gs == null) {
 			return false;
 		}
@@ -530,8 +473,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	@Override
-	public boolean invSwapRaw(Player player, int objectId1, int slotId1, int objectType1, int objectId2, int slotId2,
-			int objectType2) {
+	public boolean invSwapRaw(Player player, int objectId1, int slotId1, int objectType1, int objectId2, int slotId2, int objectType2) {
 		if (this.gs == null) {
 			return false;
 		}
@@ -579,8 +521,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	public boolean useItem_new(GameObject itemOwner, int slotId) {
 		int itemId = itemOwner.equipment.get(slotId);
 		XML objectXML = ObjectLibrary.xmlLibrary.get(itemId);
-		if ((objectXML != null) && !itemOwner.isPaused()
-				&& (objectXML.hasOwnProperty("Consumable") || objectXML.hasOwnProperty("InvUse"))) {
+		if ((objectXML != null) && !itemOwner.isPaused() && (objectXML.hasOwnProperty("Consumable") || objectXML.hasOwnProperty("InvUse"))) {
 			this.applyUseItem(itemOwner, slotId, itemId, objectXML);
 			SoundEffectLibrary.play("use_potion");
 			return true;
@@ -834,8 +775,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 			return;
 		}
 		Projectile proj = new Projectile();
-		proj.reset(serverPlayerShoot.containerType, 0, serverPlayerShoot.ownerId, serverPlayerShoot.bulletId,
-				serverPlayerShoot.angle, this.gs.lastUpdate);
+		proj.reset(serverPlayerShoot.containerType, 0, serverPlayerShoot.ownerId, serverPlayerShoot.bulletId, serverPlayerShoot.angle, this.gs.lastUpdate);
 		proj.setDamage(serverPlayerShoot.damage);
 		this.gs.map.addObj(proj, serverPlayerShoot.startingPos.x, serverPlayerShoot.startingPos.y);
 		if (needsAck) {
@@ -849,8 +789,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 			return;
 		}
 		Projectile proj = new Projectile();
-		proj.reset(allyShoot.containerType, 0, allyShoot.ownerId, allyShoot.bulletId, allyShoot.angle,
-				this.gs.lastUpdate);
+		proj.reset(allyShoot.containerType, 0, allyShoot.ownerId, allyShoot.bulletId, allyShoot.angle, this.gs.lastUpdate);
 		this.gs.map.addObj(proj, owner.x, owner.y);
 		owner.setAttack(allyShoot.containerType, allyShoot.angle);
 	}
@@ -887,8 +826,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		for (int i = 0; i < enemyShoot.numShots; i++) {
 			Projectile proj = new Projectile();
 			double angle = enemyShoot.angle + enemyShoot.angleInc * i;
-			proj.reset(owner.objectType, enemyShoot.bulletType, enemyShoot.ownerId, (enemyShoot.bulletId + i) % 256,
-					angle, this.gs.lastUpdate);
+			proj.reset(owner.objectType, enemyShoot.bulletType, enemyShoot.ownerId, (enemyShoot.bulletId + i) % 256, angle, this.gs.lastUpdate);
 			proj.setDamage(enemyShoot.damage);
 			this.gs.map.addObj(proj, enemyShoot.startingPos.x, enemyShoot.startingPos.y);
 		}
@@ -898,8 +836,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	public void onTradeRequested(TradeRequested tradeRequested) {
 
-		System.out.println(tradeRequested.name + " wants to " + "trade with you.  Type \"/trade " + tradeRequested.name
-				+ "\" to trade.");
+		System.out.println(tradeRequested.name + " wants to " + "trade with you.  Type \"/trade " + tradeRequested.name + "\" to trade.");
 
 	}
 
@@ -1238,8 +1175,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 			case StatData.BACKPACK_5_STAT:
 			case StatData.BACKPACK_6_STAT:
 			case StatData.BACKPACK_7_STAT:
-				index = stat.statType - StatData.BACKPACK_0_STAT + GeneralConstants.NUM_EQUIPMENT_SLOTS
-						+ GeneralConstants.NUM_INVENTORY_SLOTS;
+				index = stat.statType - StatData.BACKPACK_0_STAT + GeneralConstants.NUM_EQUIPMENT_SLOTS + GeneralConstants.NUM_INVENTORY_SLOTS;
 				Player o = (Player) go;
 				o.equipment.put(index, value);
 				continue;
@@ -1282,29 +1218,16 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 			oldExp = player.exp;
 		}
 		this.updateGameObject(go, objectStatus.stats, isMyObject);
-		/*if (oldLevel != -1) {
+
+		if (player != null && oldLevel != -1) {
 			if (player.level > oldLevel) {
 				if (isMyObject) {
-					newUnlocks = this.gs.model.getNewUnlocks(player.objectType, player.level);
-					player.handleLevelUp(newUnlocks.size() != 0);
-					type = this.classesModel.getCharacterClass(player.objectType);
-					if (type.getMaxLevelAchieved() < player.level) {
-						type.setMaxLevelAchieved(player.level);
-					}
-				} else {
-					player.levelUpEffect("Level Up!");
+					System.out.println("Level up!");
 				}
-			} else if (player.exp > oldExp) {
-				player.handleExpUp(player.exp - oldExp);
 			}
-		}*/
+		}
 	}
 
-	/**
-	 * Important : This method is not in the new version of the client
-	 * <p>
-	 * It's now in ChatConfig
-	 */
 	private void onText(Text text) {
 		//System.out.println("Received text : " + text.toString());
 	}
@@ -1322,8 +1245,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	private void onReconnect(Reconnect reconnect) {
 		this.disconnect();
-		Server server = new Server().setName(reconnect.name)
-				.setAddress(reconnect.host.equals("") ? reconnect.host : this.server.address)
+		Server server = new Server().setName(reconnect.name).setAddress(reconnect.host.equals("") ? reconnect.host : this.server.address)
 				.setPort(!reconnect.host.equals("") ? reconnect.port : this.server.port);
 		int gameID = reconnect.gameId;
 		boolean createChar = this.createCharacter;
@@ -1331,8 +1253,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		int keyTime = reconnect.keyTime;
 		byte[] key = reconnect.key;
 		boolean isFromArena = reconnect.isFromArena;
-		ReconnectEvent reconnectEvent = new ReconnectEvent(server, gameID, createChar, charId, keyTime, key,
-				isFromArena);
+		ReconnectEvent reconnectEvent = new ReconnectEvent(server, gameID, createChar, charId, keyTime, key, isFromArena);
 		//this.gs.dispatchEvent(reconnectEvent);
 
 		System.out.println("Reconnect event");
@@ -1374,15 +1295,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	//private void onPic(Pic pic) { this.gs.addChild(new PicView(pic.bitmapData)); }
 
 	private void onDeath(Death death) {
-		this.death = death;
-		/**BitmapData stats = new BitmapData(this.gs.stage.stageWidth, this.gs.stage.stageHeight);
-		 stats.draw(this.gs);
-		 death.background = stats;
-		 if (!this.gs.isEditor) {
-		 this.handleDeath.dispatch(death);
-		 }*/
-
-		System.out.println("DEAD");
+		System.err.println("DEAD");
 	}
 
 	private void onBuyResult(BuyResult buyResult) {
@@ -1405,12 +1318,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	private void onAccountList(AccountList accountList) {
-		/**if (accountList.accountListId == 0) {
-		 this.gs.map.party.setStars(accountList);
-		 }
-		 if (accountList.accountListId == 1) {
-		 this.gs.map.party.setIgnores(accountList);
-		 }*/
+		if (accountList.accountListId == 0) {
+			this.gs.map.party.setStars(accountList);
+		}
+		if (accountList.accountListId == 1) {
+			this.gs.map.party.setIgnores(accountList);
+		}
 	}
 
 	public void onQuestObjId(QuestObjId questObjId) {
@@ -1441,11 +1354,8 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	void onInvitedToGuild(InvitedToGuild invitedToGuild) {
-
 		System.out.println(
-				"You have been invited by " + invitedToGuild.name + " to join the guild " + invitedToGuild.guildName
-						+ ".\n  If you wish to join type \"/join " + invitedToGuild.guildName + "\"");
-
+				"You have been invited by " + invitedToGuild.name + " to join the guild " + invitedToGuild.guildName + ".\n  If you wish to join type \"/join " + invitedToGuild.guildName + "\"");
 	}
 
 	private void onImminentArenaWave(ImminentArenaWave param1) {
@@ -1520,19 +1430,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		/*	this.claimDailyRewardResponse.dispatch(param1);*/
 	}
 
-	private void onClosed() {
-		if (this.playerId != -1) {
-			this.gs.closed.dispatch();
-		} else if (this.retryConnection) {
-			if (this.delayBeforeReconect < 10) {
-				this.retry(this.delayBeforeReconect++);
-				System.err.println("Connection failed!  Retrying...");
-			} else {
-				this.gs.closed.dispatch();
-			}
-		}
-	}
-
 	private void retry(int time) {
 		this.retryTimer = new Timer(time * 1000);
 
@@ -1542,10 +1439,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	private void onRetryTimer(Event e) {
 		this.serverConnection.connect(this.server.address, this.server.port);
-	}
-
-	private void onError(String error) {
-		System.err.println(error);
 	}
 
 	public void onFailure(Failure event) {
@@ -1578,21 +1471,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	private void handleIncorrectVersionFailure(Failure event) {
-		System.out.println("Client version " + Parameters.BUILD_VERSION + ". Server version: " + event.errorDescription
-				+ ". Client Update Needed.");
+		System.out.println("Client version " + Parameters.BUILD_VERSION + ". Server version: " + event.errorDescription + ". Client Update Needed.");
 	}
 
 	private void handleDefaultFailure(Failure event) {
 		System.err.println("Failure : " + event);
 	}
 
-	private void onDoClientUpdate(Event event) {
-
-		System.out.println("Update Event");
-
-		/*Dialog dialog = (Dialog) event.currentTarget;
-		dialog.parent.removeChild(dialog);
-		this.gs.closed.dispatch();**/
-	}
 
 }

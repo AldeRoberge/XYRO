@@ -8,11 +8,8 @@ import flash.display.BitmapData;
 import flash.geom.ColorTransform;
 import flash.geom.Matrix;
 import rotmg.AGameSprite;
-import rotmg.language.model.StringMap;
 import rotmg.map.Map;
 import rotmg.model.AddSpeechBalloonVO;
-import rotmg.signals.AddSpeechBalloonSignal;
-import rotmg.text.view.stringBuilder.LineBuilder;
 import rotmg.util.IntPoint;
 
 /**
@@ -54,10 +51,6 @@ public class Merchant extends SellableObject implements IInteractiveObject {
 
 	public double alpha = 1.0;
 
-	private AddSpeechBalloonSignal addSpeechBalloon;
-
-	private StringMap stringMap;
-
 	private boolean firstUpdate = true;
 
 	private int messageIndex = 0;
@@ -67,8 +60,6 @@ public class Merchant extends SellableObject implements IInteractiveObject {
 	public Merchant(XML param1) {
 		super(param1);
 		this.ct = new ColorTransform(1, 1, 1, 1);
-		this.addSpeechBalloon = AddSpeechBalloonSignal.getInstance();
-		this.stringMap = StringMap.getInstance();
 		isInteractive = true;
 	}
 
@@ -99,47 +90,8 @@ public class Merchant extends SellableObject implements IInteractiveObject {
 	}
 
 	public AddSpeechBalloonVO getSpeechBalloon(int param1) {
-		LineBuilder loc2 = null;
-		int loc3 = 0;
-		int loc4 = 0;
-		int loc5 = 0;
-		switch (param1) {
-		case NEW_MESSAGE:
-			loc2 = new LineBuilder().setParams("Merchant.new");
-			loc3 = 15132390;
-			loc4 = 16777215;
-			loc5 = 5931045;
-			break;
-		case MINS_LEFT_MESSAGE:
-			if (this.minsLeft == 0) {
-				loc2 = new LineBuilder().setParams("Merchant.goingSoon");
-			} else if (this.minsLeft == 1) {
-				loc2 = new LineBuilder().setParams("Merchant.goingInOneMinute");
-			} else {
-				loc2 = new LineBuilder().setParams("Merchant.goingInNMinutes", "{\"minutes\":this.minsLeft}");
 
-			}
-			loc3 = 5973542;
-			loc4 = 16549442;
-			loc5 = 16549442;
-			break;
-		case ITEMS_LEFT_MESSAGE:
-			loc2 = new LineBuilder().setParams("Merchant.limitedStock", " {\"count\":this.count}");
-			loc3 = 5973542;
-			loc4 = 16549442;
-			loc5 = 16549442;
-			break;
-		case DISCOUNT_MESSAGE:
-			loc2 = new LineBuilder().setParams("Merchant.discount", "{\"discount\":this.discount}");
-			loc3 = 6324275;
-			loc4 = 16777103;
-			loc5 = 16777103;
-			break;
-		default:
-			return null;
-		}
-		loc2.setStringMap(this.stringMap);
-		return new AddSpeechBalloonVO(this, loc2.getString(), "", false, false, loc3, 1, loc4, 1, loc5, 6, true, false);
+		return new AddSpeechBalloonVO(this, "", "", false, false, 0, 1, 0, 1, 0, 6, true, false);
 	}
 
 	public boolean update(int time, int dt) {
@@ -168,7 +120,9 @@ public class Merchant extends SellableObject implements IInteractiveObject {
 		}
 		this.messageIndex = ++this.messageIndex % loc3.length;
 		int loc4 = loc3.get(this.messageIndex);
-		this.addSpeechBalloon.dispatch(this.getSpeechBalloon(loc4));
+
+		//this.getSpeechBalloon(loc4)
+
 		return true;
 	}
 

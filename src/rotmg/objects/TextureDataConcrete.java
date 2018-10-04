@@ -32,8 +32,7 @@ public class TextureDataConcrete extends TextureData {
 		} else {
 			this.parse(param1);
 		}
-		for (XML loc2 :
-				param1.children("AltTexture")) {
+		for (XML loc2 : param1.children("AltTexture")) {
 			this.parse(loc2);
 		}
 		if (param1.hasOwnProperty("Mask")) {
@@ -69,7 +68,6 @@ public class TextureDataConcrete extends TextureData {
 		return false;
 	}
 
-
 	private void parse(XML xml) {
 		parse(xml, "");
 	}
@@ -78,56 +76,59 @@ public class TextureDataConcrete extends TextureData {
 		MaskedImage image = null;
 		RemoteTexture remoteTexture = null;
 		switch (xml.name()) {
-			case "Texture":
-				try {
-					texture = AssetLibrary.getImageFromSet(xml.getValue("File"), xml.getIntValue("Index"));
-				} catch (Error error) {
-					throw new Error("Error loading Texture for " + param2 + " -  name");
+		case "Texture":
+			try {
+				texture = AssetLibrary.getImageFromSet(xml.getValue("File"), xml.getIntValue("Index"));
+			} catch (Error error) {
+				throw new Error("Error loading Texture for " + param2 + " -  name");
+			}
+			break;
+		case "Mask":
+			mask = AssetLibrary.getImageFromSet(xml.getValue("File"), xml.getIntValue("Index"));
+			break;
+		case "Effect":
+			effectProps = new EffectProperties(xml);
+			break;
+		case "AnimatedTexture":
+			animatedChar = AnimatedChars.getAnimatedChar(xml.getValue("File"), xml.getIntValue("Index"));
+			try {
+				image = animatedChar.imageFromAngle(0, AnimatedChar.STAND, 0);
+				texture = image.image;
+				mask = image.mask;
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.err.println("Error loading AnimatedTexture for " + param2 + " -  name");
+
+				//System.exit(0);
+			}
+			break;
+		case "RemoteTexture":
+			//System.err.println("Remote textures are not fully implemented!");
+			texture = AssetLibrary.getImageFromSet("lofiObj3", 255);
+			if (this.isUsingLocalTextures) {
+				remoteTexture = new RemoteTexture(xml.getValue("Id"), xml.getValue("Instance"), new SignalConsumer<>(this::onRemoteTexture));
+				remoteTexture.run();
+				if (!AssetLoader.currentXmlIsTesting) {
+					remoteTexturesUsed = true;
 				}
-				break;
-			case "Mask":
-				mask = AssetLibrary.getImageFromSet(xml.getValue("File"), xml.getIntValue("Index"));
-				break;
-			case "Effect":
-				effectProps = new EffectProperties(xml);
-				break;
-			case "AnimatedTexture":
-				animatedChar = AnimatedChars.getAnimatedChar(xml.getValue("File"), xml.getIntValue("Index"));
-				try {
-					image = animatedChar.imageFromAngle(0, AnimatedChar.STAND, 0);
-					texture = image.image;
-					mask = image.mask;
-				} catch (Error error) {
-					throw new Error("Error loading AnimatedTexture for " + param2 + " -  name");
+			}
+			remoteTextureDir = xml.hasOwnProperty("Right") ? AnimatedChar.RIGHT : AnimatedChar.DOWN;
+			break;
+		case "RandomTexture":
+			try {
+				randomTextureData = new Vector<>();
+				for (XML childXML : xml.children()) {
+					randomTextureData.push(new TextureDataConcrete(childXML));
 				}
-				break;
-			case "RemoteTexture":
-				//System.err.println("Remote textures are not fully implemented!");
-				texture = AssetLibrary.getImageFromSet("lofiObj3", 255);
-				if (this.isUsingLocalTextures) {
-					remoteTexture = new RemoteTexture(xml.getValue("Id"), xml.getValue("Instance"), new SignalConsumer<>(this::onRemoteTexture));
-					remoteTexture.run();
-					if (!AssetLoader.currentXmlIsTesting) {
-						remoteTexturesUsed = true;
-					}
-				}
-				remoteTextureDir = xml.hasOwnProperty("Right") ? AnimatedChar.RIGHT : AnimatedChar.DOWN;
-				break;
-			case "RandomTexture":
-				try {
-					randomTextureData = new Vector<>();
-					for (XML childXML : xml.children()) {
-						randomTextureData.push(new TextureDataConcrete(childXML));
-					}
-				} catch (Error error) {
-					throw new Error("Error loading RandomTexture for " + param2);
-				}
-				break;
-			case "AltTexture":
-				if (altTextures == null) {
-					altTextures = new Dictionary<>();
-				}
-				altTextures.put(xml.getIntAttribute("id"), new TextureDataConcrete(xml));
+			} catch (Error error) {
+				throw new Error("Error loading RandomTexture for " + param2);
+			}
+			break;
+		case "AltTexture":
+			if (altTextures == null) {
+				altTextures = new Dictionary<>();
+			}
+			altTextures.put(xml.getIntAttribute("id"), new TextureDataConcrete(xml));
 		}
 	}
 
@@ -140,6 +141,5 @@ public class TextureDataConcrete extends TextureData {
 			texture = param1;
 		}
 	}
-
 
 }

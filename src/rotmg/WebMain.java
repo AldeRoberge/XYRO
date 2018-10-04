@@ -17,7 +17,6 @@ public class WebMain {
 
 	private void setup() {
 		new AssetLoader().load();
-		this.configureForAirIfDesktopPlayer();
 
 		// Following is a loose implementation of PlayGameCommand's makeGameView
 
@@ -26,22 +25,20 @@ public class WebMain {
 		p.currentCharId = 2;
 		p.setIsAgeVerified(true);
 
+		
+		
+		
+		
 		Server loc1 = new Server().setAddress("54.183.179.205").setPort(2050);
 
 		boolean createCharacter = false;
 		int keyTime = -1;
-		byte[] loc6 = new byte[0];
+		byte[] key = new byte[0];
 		boolean isFromArena = false;
 
-		AGameSprite g = new AGameSprite(loc1, Parameters.NEXUS_GAMEID, createCharacter, p.currentCharId, keyTime, loc6, p,
+		AGameSprite g = new AGameSprite(loc1, Parameters.NEXUS_GAMEID, createCharacter, p.currentCharId, keyTime, key, p,
 				null, isFromArena);
 		g.connect();
 	}
 
-	private void configureForAirIfDesktopPlayer() {
-		if (Capabilities.playerType.equals("Desktop")) {
-			Parameters.data.fullscreenMode = false;
-			Parameters.save();
-		}
-	}
 }

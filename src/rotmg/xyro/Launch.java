@@ -1,3 +1,4 @@
+package rotmg.xyro;
 import rotmg.WebMain;
 
 public class Launch {

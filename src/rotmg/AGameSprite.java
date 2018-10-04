@@ -24,7 +24,6 @@ import rotmg.objects.IInteractiveObject;
 import rotmg.objects.Pet;
 import rotmg.objects.Player;
 import rotmg.parameters.Parameters;
-import rotmg.signals.ShowProTipSignal;
 import rotmg.stage3D.Renderer;
 import rotmg.util.PointUtil;
 
@@ -87,7 +86,6 @@ public class AGameSprite {
 
 	public void initialize() {
 		Account loc1 = null;
-		ShowProTipSignal loc4 = null;
 		map.initialize();
 
 		loc1 = WebAccount.getInstance();
