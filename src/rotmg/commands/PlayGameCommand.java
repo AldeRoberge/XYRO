@@ -5,7 +5,6 @@ import rotmg.AGameSprite;
 import rotmg.account.core.services.GetCharListTask;
 import rotmg.appengine.SavedCharacter;
 import rotmg.core.model.PlayerModel;
-import rotmg.lib.tasks.tasks.TaskMonitor;
 import rotmg.model.GameInitData;
 import rotmg.net.Server;
 import rotmg.parameters.Parameters;
@@ -26,8 +25,6 @@ public class PlayGameCommand {
 
 	public GetCharListTask task;
 
-	public TaskMonitor monitor;
-
 	public PlayGameCommand() {
 		super();
 		data = GameInitData.getInstance();
@@ -35,7 +32,6 @@ public class PlayGameCommand {
 		petsModel = PetsModel.getInstance();
 		servers = Servers.getInstance();
 		task = GetCharListTask.getInstance();
-		monitor = TaskMonitor.getInstance();
 	}
 
 	public void execute() {

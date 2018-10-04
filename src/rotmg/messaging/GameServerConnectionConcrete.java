@@ -22,12 +22,9 @@ import rotmg.classes.model.CharacterClass;
 import rotmg.classes.model.ClassesModel;
 import rotmg.constants.GeneralConstants;
 import rotmg.constants.ItemConstants;
-import rotmg.events.KeyInfoResponseSignal;
-import rotmg.events.ReconnectEvent;
 import rotmg.map.AbstractMap;
 import rotmg.map.GroundLibrary;
 import rotmg.map.Map;
-import rotmg.maploading.signals.ChangeMapSignal;
 import rotmg.messaging.data.GroundTileData;
 import rotmg.messaging.data.ObjectData;
 import rotmg.messaging.data.ObjectStatusData;
@@ -149,7 +146,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	private Player player;
 	private boolean retryConnection = true;
 	private Timer retryTimer;
-	private KeyInfoResponseSignal keyInfoResponse;
 	private ClassesModel classesModel;
 	private GameModel model;
 
@@ -160,8 +156,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 		System.out.println("GameSprite : " + gs);
 
-		this.changeMapSignal = ChangeMapSignal.getInstance();
-		this.keyInfoResponse = KeyInfoResponseSignal.getInstance();
 		this.classesModel = ClassesModel.getInstance();
 		serverConnection = SocketServer.getInstance();
 		this.messages = MessageCenter.getInstance();
@@ -1253,7 +1247,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		int keyTime = reconnect.keyTime;
 		byte[] key = reconnect.key;
 		boolean isFromArena = reconnect.isFromArena;
-		ReconnectEvent reconnectEvent = new ReconnectEvent(server, gameID, createChar, charId, keyTime, key, isFromArena);
+		//ReconnectEvent reconnectEvent = new ReconnectEvent(server, gameID, createChar, charId, keyTime, key, isFromArena);
 		//this.gs.dispatchEvent(reconnectEvent);
 
 		System.out.println("Reconnect event");
@@ -1423,7 +1417,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	private void onKeyInfoResponse(KeyInfoResponse param1) {
-		this.keyInfoResponse.dispatch(param1);
+		//this.keyInfoResponse.dispatch(param1);
 	}
 
 	private void onLoginRewardResponse(ClaimDailyRewardResponse param1) {

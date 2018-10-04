@@ -1,10 +1,7 @@
 package rotmg;
 
-import static flash.utils.timer.getTimer.getTimer;
-
-import org.osflash.signals.Signal;
-
 import flash.events.Event;
+import org.osflash.signals.Signal;
 import rotmg.account.core.Account;
 import rotmg.account.core.WebAccount;
 import rotmg.constants.GeneralConstants;
@@ -13,8 +10,6 @@ import rotmg.core.model.PlayerModel;
 import rotmg.map.AbstractMap;
 import rotmg.map.Camera;
 import rotmg.map.Map;
-import rotmg.maploading.signals.HideMapLoadingSignal;
-import rotmg.maploading.signals.MapLoadedSignal;
 import rotmg.messaging.GameServerConnection;
 import rotmg.messaging.GameServerConnectionConcrete;
 import rotmg.messaging.incoming.MapInfo;
@@ -26,6 +21,8 @@ import rotmg.objects.Player;
 import rotmg.parameters.Parameters;
 import rotmg.stage3D.Renderer;
 import rotmg.util.PointUtil;
+
+import static flash.utils.timer.getTimer.getTimer;
 
 public class AGameSprite {
 
@@ -51,8 +48,7 @@ public class AGameSprite {
 
 	public GameServerConnection gsc;
 
-	public AGameSprite(Server param1, int param2, boolean param3, int param4, int param5, byte[] param6,
-			PlayerModel param7, byte[] param8, boolean param9) {
+	public AGameSprite(Server param1, int param2, boolean param3, int param4, int param5, byte[] param6, PlayerModel param7, byte[] param8, boolean param9) {
 		super();
 
 		this.model = param7;
@@ -64,24 +60,12 @@ public class AGameSprite {
 		gsc = new GameServerConnectionConcrete(this, param1, param2, param3, param4, param5, param6, param8, param9);
 	}
 
-	public static void dispatchMapLoaded(MapInfo param1) {
-		MapLoadedSignal loc2 = MapLoadedSignal.getInstance();
-		loc2.dispatch(param1);
-	}
-
-	private static void hidePreloader() {
-		HideMapLoadingSignal loc1 = HideMapLoadingSignal.getInstance();
-		loc1.dispatch();
-	}
-
 	public void setFocus(GameObject param1) {
 		param1 = map.player;
 	}
 
 	public void applyMapInfo(MapInfo param1) {
-		map.setProps(param1.width, param1.height, param1.name, param1.background, param1.allowPlayerTeleport,
-				param1.showDisplays);
-		dispatchMapLoaded(param1);
+		map.setProps(param1.width, param1.height, param1.name, param1.background, param1.allowPlayerTeleport, param1.showDisplays);
 	}
 
 	public void initialize() {
@@ -92,7 +76,6 @@ public class AGameSprite {
 
 		this.isNexus = map.name.equals(Map.NEXUS);
 		Parameters.save();
-		hidePreloader();
 	}
 
 	private void updateNearestInteractive() {
@@ -109,8 +92,7 @@ public class AGameSprite {
 		for (GameObject loc7 : map.goDict) {
 			loc8 = (IInteractiveObject) loc7;
 			if (loc8 != null && (!(loc8 instanceof Pet) || !this.map.isPetYard)) {
-				if (Math.abs(loc5 - loc7.x) < GeneralConstants.MAXIMUM_INTERACTION_DISTANCE
-						|| Math.abs(loc6 - loc7.y) < GeneralConstants.MAXIMUM_INTERACTION_DISTANCE) {
+				if (Math.abs(loc5 - loc7.x) < GeneralConstants.MAXIMUM_INTERACTION_DISTANCE || Math.abs(loc6 - loc7.y) < GeneralConstants.MAXIMUM_INTERACTION_DISTANCE) {
 					loc4 = PointUtil.distanceXY(loc7.x, loc7.y, loc5, loc6);
 					if (loc4 < GeneralConstants.MAXIMUM_INTERACTION_DISTANCE && loc4 < loc2) {
 						loc2 = loc4;
@@ -149,8 +131,7 @@ public class AGameSprite {
 	}
 
 	public boolean evalIsNotInCombatMapArea() {
-		return map.name.equals(Map.NEXUS) || map.name.equals(Map.VAULT) || map.name.equals(Map.GUILD_HALL)
-				|| map.name.equals(Map.CLOTH_BAZAAR) || map.name.equals(Map.NEXUS_EXPLANATION)
+		return map.name.equals(Map.NEXUS) || map.name.equals(Map.VAULT) || map.name.equals(Map.GUILD_HALL) || map.name.equals(Map.CLOTH_BAZAAR) || map.name.equals(Map.NEXUS_EXPLANATION)
 				|| map.name.equals(Map.DAILY_QUEST_ROOM);
 	}
 

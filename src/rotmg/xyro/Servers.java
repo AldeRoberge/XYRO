@@ -27,7 +27,7 @@ public class Servers {
 		return servers;
 	}
 
-	private Vector<Server> makeListOfServers(XML data) {
+	public Vector<Server> makeListOfServers(XML data) {
 		List<XML> loc1 = data.child("Servers").children("Server");
 		Vector<Server> loc2 = new Vector<Server>(0);
 		for (XML loc3 : loc1) {
