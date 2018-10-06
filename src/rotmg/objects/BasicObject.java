@@ -3,7 +3,6 @@ package rotmg.objects;
 import java.util.ArrayList;
 import java.util.List;
 
-import rotmg.map.Camera;
 import rotmg.map.Map;
 
 public class BasicObject {
@@ -66,19 +65,6 @@ public class BasicObject {
 
 	public boolean update(int time, int dt) {
 		return true;
-	}
-
-	public void computeSortVal(Camera camera) {
-		this.posW.clear();
-		this.posW.add(this.x);
-		this.posW.add(this.y);
-		this.posW.add(0.0);
-		this.posW.add(this.x);
-		this.posW.add(this.y);
-		this.posW.add(this.z);
-		this.posS.clear();
-		camera.wToS.transformVectors(this.posW, this.posS);
-		this.sortVal = this.posS.get(1);
 	}
 
 	public boolean addTo(Map map, double par1, double par2) {

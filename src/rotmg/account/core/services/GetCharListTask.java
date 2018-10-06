@@ -1,7 +1,7 @@
 package rotmg.account.core.services;
 
 import alde.flash.utils.XML;
-import rotmg.account.core.WebAccount;
+import rotmg.account.core.Account;
 import rotmg.account.securityQuestions.data.SecurityQuestionsModel;
 import rotmg.appengine.api.AppEngineClient;
 import rotmg.core.model.PlayerModel;
@@ -11,7 +11,7 @@ import rotmg.xyro.Servers;
 public class GetCharListTask {
 
 	public static GetCharListTask instance;
-	public WebAccount account;
+	public Account account;
 	public AppEngineClient client;
 	public PlayerModel model;
 	public SecurityQuestionsModel securityQuestionsModel;
@@ -69,13 +69,13 @@ public class GetCharListTask {
 			}
 		} else {
 			if (charList.hasOwnProperty("Account")) {
-				if (this.account instanceof WebAccount) {
-					this.account.userDisplayName = charList.child("Account").getValue("Name");
-					this.account.paymentProvider = charList.child("Account").getValue("PaymentProvider");
-					if (charList.child("Account").hasOwnProperty("PaymentData")) {
-						this.account.paymentData = charList.child("Account").getValue("PaymentData");
-					}
+
+				this.account.userDisplayName = charList.child("Account").getValue("Name");
+				this.account.paymentProvider = charList.child("Account").getValue("PaymentProvider");
+				if (charList.child("Account").hasOwnProperty("PaymentData")) {
+					this.account.paymentData = charList.child("Account").getValue("PaymentData");
 				}
+
 				if (charList.children("Account").get(0).hasOwnProperty("SecurityQuestions")) {
 					this.securityQuestionsModel.showSecurityQuestionsOnStartup = charList.child("Account").child("SecurityQuestions").getValue("ShowSecurityQuestionsDialog").equals("1");
 					this.securityQuestionsModel.clearQuestionsList();

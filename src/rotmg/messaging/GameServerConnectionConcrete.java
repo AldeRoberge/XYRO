@@ -17,7 +17,7 @@ import flash.events.Event;
 import flash.events.TimerEvent;
 import flash.utils.timer.Timer;
 import rotmg.AGameSprite;
-import rotmg.account.core.WebAccount;
+import rotmg.account.core.Account;
 import rotmg.classes.model.CharacterClass;
 import rotmg.classes.model.ClassesModel;
 import rotmg.constants.GeneralConstants;
@@ -498,9 +498,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		}
 	}
 
-	public void useItem(int time, int objectId, int slotId, int objectType, double posX, double posY, int useType)
-
-	{
+	public void useItem(int time, int objectId, int slotId, int objectType, double posX, double posY, int useType) {
 		UseItem useItemMess = (UseItem) this.messages.require(USEITEM);
 		useItemMess.time = time;
 		useItemMess.slotObject.objectId = objectId;
@@ -699,9 +697,9 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	 * This method needs verification (mapJSON is a String, not a byte[])
 	 */
 	private void onConnected() {
-		WebAccount loc1 = (WebAccount) WebAccount.getInstance();
+		Account loc1 = (Account) Account.getInstance();
 
-		System.out.println("Connected!");
+		System.out.println("Connected!...");
 
 		this.encryptConnection();
 		Hello hello = (Hello) this.messages.require(HELLO);
@@ -728,7 +726,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		hello.platformToken = loc1.platformToken;
 		hello.userToken = loc1.token;
 
-		System.out.println("Sending hello packet...");
+		System.out.println("Sending Hello...");
 
 		serverConnection.sendMessage(hello);
 	}
@@ -1471,6 +1469,5 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	private void handleDefaultFailure(Failure event) {
 		System.err.println("Failure : " + event);
 	}
-
 
 }

@@ -64,8 +64,6 @@ public abstract class AbstractMap {
 
 	public abstract void removeObj(int param1);
 
-	public abstract void draw(Camera param1, int param2);
-
 	public boolean allowPlayerTeleport() {
 		return this.name != Map.NEXUS && this.allowPlayerTeleport;
 	}

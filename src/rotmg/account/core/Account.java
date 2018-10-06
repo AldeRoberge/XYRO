@@ -1,50 +1,181 @@
 package rotmg.account.core;
 
-/**
- * 100% match
- */
-public interface Account {
+public class Account {
 
-	String getPlatformToken();
+	public static final String NETWORKNAME = "rotmg";
+	public static final String WEBUSERID = "";
+	public static final String WEBPLAYPLATFORMNAME = "rotmg";
 
-	void setPlatformToken(String param1);
+	public String signedRequest = "";
+	public String kabamId = "";
 
-	void updateUser(String param1, String param2, String param3);
+	public boolean isVerifiedEmail = true;
+	public String platformToken = "";
+	public String userDisplayName = "";
 
-	String getUserName();
+	public String entryTag = "";
+	public boolean rememberMe = true;
+	public String paymentProvider = "";
+	public String paymentData = "";
+	public String userId = "";
+	public String password = "";
+	public String token = "";
+	public String secret = "";
+	public Object credentials;
+	public String gameNetworkUserId = "";
+	public String gameNetwork = "";
+	public String playPlatform = "";
+	String userName = "";
+	boolean isRegistered;
+	String requestPrefix = "";
+	boolean isVerified = true;
 
-	String getUserId();
+	String moneyUserId = "";
 
-	String getPassword();
+	String moneyAccessToken = "";
 
-	String getToken();
+	public Account() {
+		super();
+	}
 
-	String getSecret();
+	public static Account instance;
 
-	Object getCredentials();
+	public Account(String email, String password) {
+		this.userId = email;
+		this.password = password;
+	}
 
-	boolean isRegistered();
+	public static void setInstance(Account inst) {
+		instance = inst;
+	}
 
-	void clear();
+	public static Account getInstance() {
+		Account account = new Account("fliphcc@gmail.com", "ati3SmaQ3de");
+		account.secret = account.password;
+		return account;
+	}
 
-	void reportIntStat(String param1, int param2);
+	public String getUserName() {
+		return this.userId;
+	}
 
-	String getRequestPrefix();
+	public String getUserId() {
+		if (this.userId == null) {
+			//this.userId = GUID.create();
+		}
+		return this.userId;
+	}
 
-	String gameNetworkUserId();
+	public String getPassword() {
 
-	String gameNetwork();
+		if (this.password != null) {
+			return this.password;
+		} else {
+			return "";
+		}
 
-	String playPlatform();
+	}
 
-	String getEntryTag();
+	public String getToken() {
+		return "";
+	}
 
-	void verify(boolean param1);
+	public boolean isRegistered() {
+		return true;
+	}
 
-	boolean isVerified();
+	public void reportIntStat(String param1, int param2) {
+	}
 
-	String getMoneyUserId();
+	public String getRequestPrefix() {
+		return "/credits";
+	}
 
-	String getMoneyAccessToken();
+	public String gameNetworkUserId() {
+		return WEBUSERID;
+	}
+
+	public String gameNetwork() {
+		return NETWORKNAME;
+	}
+
+	public String playPlatform() {
+		return WEBPLAYPLATFORMNAME;
+	}
+
+	public String getEntryTag() {
+		if (this.entryTag != null) {
+			return this.entryTag;
+		} else {
+			return "";
+		}
+	}
+
+	public String getSecret() {
+		return "";
+	}
+
+	public void verify(boolean param1) {
+		this.isVerifiedEmail = param1;
+	}
+
+	public boolean isVerified() {
+		return this.isVerifiedEmail;
+	}
+
+	public String getPlatformToken() {
+
+		if (this.platformToken != null) {
+			return this.platformToken;
+		} else {
+			return "";
+		}
+
+	}
+
+	public void setPlatformToken(String param1) {
+		this.platformToken = param1;
+	}
+
+	public String getMoneyAccessToken() {
+		return this.signedRequest;
+	}
+
+	public String getMoneyUserId() {
+		return this.kabamId;
+	}
+
+	public String getUserDisplayName() {
+		return this.userDisplayName;
+	}
+
+	public void setUserDisplayName(String param1) {
+		this.userDisplayName = param1;
+	}
+
+	public boolean getRememberMe() {
+		return this.rememberMe;
+	}
+
+	public void setRememberMe(boolean param1) {
+		this.rememberMe = param1;
+	}
+
+	public String getPaymentProvider() {
+		return this.paymentProvider;
+	}
+
+	public void setPaymentProvider(String param1) {
+		this.paymentProvider = param1;
+	}
+
+	public String getPaymentData() {
+		return this.paymentData;
+	}
+
+	public void setPaymentData(String param1) {
+		this.paymentData = param1;
+	}
+
 
 }

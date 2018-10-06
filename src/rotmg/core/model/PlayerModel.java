@@ -15,9 +15,7 @@ public class PlayerModel {
 	public static final int[] CHARACTER_SLOT_PRICES = new int[]{600, 800, 1000};
 
 	public static Signal creditsChanged = new Signal<Integer>();
-
 	public static Signal fameChanged = new Signal<Integer>();
-
 	public static Signal tokensChanged = new Signal<Integer>();
 
 	private static PlayerModel instance;

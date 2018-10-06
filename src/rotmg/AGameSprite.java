@@ -1,14 +1,14 @@
 package rotmg;
 
-import flash.events.Event;
+import static flash.utils.timer.getTimer.getTimer;
+
 import org.osflash.signals.Signal;
-import rotmg.account.core.Account;
-import rotmg.account.core.WebAccount;
+
+import flash.events.Event;
 import rotmg.constants.GeneralConstants;
 import rotmg.core.model.MapModel;
 import rotmg.core.model.PlayerModel;
 import rotmg.map.AbstractMap;
-import rotmg.map.Camera;
 import rotmg.map.Map;
 import rotmg.messaging.GameServerConnection;
 import rotmg.messaging.GameServerConnectionConcrete;
@@ -21,8 +21,6 @@ import rotmg.objects.Player;
 import rotmg.parameters.Parameters;
 import rotmg.stage3D.Renderer;
 import rotmg.util.PointUtil;
-
-import static flash.utils.timer.getTimer.getTimer;
 
 public class AGameSprite {
 
@@ -44,20 +42,17 @@ public class AGameSprite {
 
 	public PlayerModel model;
 
-	public Camera camera;
-
 	public GameServerConnection gsc;
 
-	public AGameSprite(Server param1, int param2, boolean param3, int param4, int param5, byte[] param6, PlayerModel param7, byte[] param8, boolean param9) {
+	public AGameSprite(Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, PlayerModel model, byte[] mapJSON, boolean isFromArena) {
 		super();
 
-		this.model = param7;
+		this.model = model;
 
 		this.moveRecords = new MoveRecords();
-		this.camera = new Camera();
 
 		map = new Map(this);
-		gsc = new GameServerConnectionConcrete(this, param1, param2, param3, param4, param5, param6, param8, param9);
+		gsc = new GameServerConnectionConcrete(this, server, gameId, createCharacter, charId, keyTime, key, mapJSON, isFromArena);
 	}
 
 	public void setFocus(GameObject param1) {
@@ -69,11 +64,7 @@ public class AGameSprite {
 	}
 
 	public void initialize() {
-		Account loc1 = null;
 		map.initialize();
-
-		loc1 = WebAccount.getInstance();
-
 		this.isNexus = map.name.equals(Map.NEXUS);
 		Parameters.save();
 	}

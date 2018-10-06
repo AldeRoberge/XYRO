@@ -5,10 +5,8 @@ import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
-import rotmg.map.Camera;
 import rotmg.util.MaskedImage;
 import rotmg.util.MaskedImageSet;
-
 
 /**
  * This matches the client by 90%, only the Transparency-check is not suported and mirroring is untested
@@ -30,8 +28,7 @@ public class AnimatedChar {
 	public static final int WALK = 1;
 
 	public static final int ATTACK = 2;
-	private static final int SEC_TO_DIRS[][] = {{LEFT, UP, DOWN}, {UP, LEFT, DOWN}, {UP, RIGHT, DOWN},
-			{RIGHT, UP, DOWN}, {RIGHT, DOWN}, {DOWN, RIGHT}, {DOWN, LEFT}, {LEFT, DOWN}};
+	private static final int SEC_TO_DIRS[][] = { { LEFT, UP, DOWN }, { UP, LEFT, DOWN }, { UP, RIGHT, DOWN }, { RIGHT, UP, DOWN }, { RIGHT, DOWN }, { DOWN, RIGHT }, { DOWN, LEFT }, { LEFT, DOWN } };
 	public static int NUM_ACTION = 3;
 	private static double PIOVER4 = (double) Math.PI / 4;
 
@@ -73,8 +70,7 @@ public class AnimatedChar {
 		}
 	}
 
-	private Dictionary<Integer, Vector<MaskedImage>> loadDir(int offset, boolean mirror, boolean sym,
-	                                                         MaskedImageSet frames) {
+	private Dictionary<Integer, Vector<MaskedImage>> loadDir(int offset, boolean mirror, boolean sym, MaskedImageSet frames) {
 		Vector<MaskedImage> attackVec = null;
 		BitmapData image = null;
 		BitmapData mask = null;
@@ -99,21 +95,17 @@ public class AnimatedChar {
 		MaskedImage swordBitImage = frames.images.get(offset + 6);
 		if (attack2Image != null /*&& swordBitImage.amountTransparent() != 1*/) {
 			image = new BitmapData(this.width * 3, this.height, true, 0);
-			image.copyPixels(attack2Image.image, new Rectangle(0, 0, this.width, this.height),
-					new Point(this.width, 0));
-			image.copyPixels(swordBitImage.image, new Rectangle(0, 0, this.width, this.height),
-					new Point(this.width * 2, 0));
+			image.copyPixels(attack2Image.image, new Rectangle(0, 0, this.width, this.height), new Point(this.width, 0));
+			image.copyPixels(swordBitImage.image, new Rectangle(0, 0, this.width, this.height), new Point(this.width * 2, 0));
 			mask = null;
 			if (attack2Image.mask != null || swordBitImage.mask != null) {
 				mask = new BitmapData(this.width * 3, this.height, true, 0);
 			}
 			if (attack2Image.mask != null) {
-				mask.copyPixels(attack2Image.mask, new Rectangle(0, 0, this.width, this.height),
-						new Point(this.width, 0));
+				mask.copyPixels(attack2Image.mask, new Rectangle(0, 0, this.width, this.height), new Point(this.width, 0));
 			}
 			if (swordBitImage.mask != null) {
-				mask.copyPixels(swordBitImage.mask, new Rectangle(0, 0, this.width, this.height),
-						new Point(this.width * 2, 0));
+				mask.copyPixels(swordBitImage.mask, new Rectangle(0, 0, this.width, this.height), new Point(this.width * 2, 0));
 			}
 			attack2Image = new MaskedImage(image, mask);
 		}
@@ -153,7 +145,7 @@ public class AnimatedChar {
 		/*System.out.println("Loc4 size : "+loc4.length);
 		System.out.println("p = "+p);
 		System.out.println("Loc5 = "+loc5);
-
+		
 		System.out.println(loc4.get(loc5));*/
 
 		return loc4.get(loc5);
@@ -179,7 +171,4 @@ public class AnimatedChar {
 		return this.height;
 	}
 
-	public MaskedImage imageFromFacing(double facing, Camera camera, int action, double p) {
-		return null;
-	}
 }

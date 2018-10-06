@@ -253,15 +253,9 @@ public class Map extends AbstractMap {
 		return squares.get((int) (param1 + param2 * width));
 	}
 
-	@Override
-	public void draw(Camera param1, int param2) {
-
-	}
-
 	private int getFilterIndex() {
 		int loc1 = 0;
-		if (player != null
-				&& (player.condition.get(ConditionEffect.CE_FIRST_BATCH) & ConditionEffect.MAP_FILTER_BITMASK) != 0) {
+		if (player != null && (player.condition.get(ConditionEffect.CE_FIRST_BATCH) & ConditionEffect.MAP_FILTER_BITMASK) != 0) {
 			if (player.isPaused()) {
 				loc1 = Renderer.STAGE3D_FILTER_PAUSE;
 			} else if (player.isBlind()) {

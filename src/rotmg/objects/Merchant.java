@@ -9,7 +9,6 @@ import flash.geom.ColorTransform;
 import flash.geom.Matrix;
 import rotmg.AGameSprite;
 import rotmg.map.Map;
-import rotmg.model.AddSpeechBalloonVO;
 import rotmg.util.IntPoint;
 
 /**
@@ -87,11 +86,6 @@ public class Merchant extends SellableObject implements IInteractiveObject {
 			map.merchLookup.put(loc1, null);
 		}
 		super.removeFromMap();
-	}
-
-	public AddSpeechBalloonVO getSpeechBalloon(int param1) {
-
-		return new AddSpeechBalloonVO(this, "", "", false, false, 0, 1, 0, 1, 0, 6, true, false);
 	}
 
 	public boolean update(int time, int dt) {

@@ -5,7 +5,6 @@ import alde.flash.utils.XML;
 import flash.events.Event;
 import flash.utils.Dictionary;
 import rotmg.account.core.Account;
-import rotmg.account.core.WebAccount;
 import rotmg.net.LatLong;
 import rotmg.objects.ObjectLibrary;
 import rotmg.objects.Player;
@@ -72,7 +71,7 @@ public class SavedCharactersList extends Event {
 		this.parseSalesForceData();
 		this.reportUnlocked();
 
-		loc5 = WebAccount.getInstance();
+		loc5 = Account.getInstance();
 		loc5.reportIntStat("BestLevel", this.bestOverallLevel());
 		loc5.reportIntStat("BestFame", this.bestOverallFame());
 		loc5.reportIntStat("NumStars", this.numStars);
@@ -263,7 +262,7 @@ public class SavedCharactersList extends Event {
 	}
 
 	private void reportUnlocked() {
-		this.account = WebAccount.getInstance();
+		this.account = Account.getInstance();
 		this.updateAccount();
 	}
 
