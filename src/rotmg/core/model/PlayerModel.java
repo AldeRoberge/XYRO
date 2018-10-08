@@ -1,41 +1,39 @@
 package rotmg.core.model;
 
-
 import org.osflash.signals.Signal;
 
 import alde.flash.utils.Vector;
 import rotmg.account.core.Account;
+import rotmg.account.core.services.AppEngine;
 import rotmg.appengine.SavedCharacter;
 import rotmg.appengine.SavedCharactersList;
 import rotmg.appengine.SavedNewsItem;
 import rotmg.net.LatLong;
+import rotmg.pets.data.PetsModel;
 
 public class PlayerModel {
 
-	public static final int[] CHARACTER_SLOT_PRICES = new int[]{600, 800, 1000};
+	public static final int[] CHARACTER_SLOT_PRICES = new int[] { 600, 800, 1000 };
 
 	public static Signal creditsChanged = new Signal<Integer>();
 	public static Signal fameChanged = new Signal<Integer>();
 	public static Signal tokensChanged = new Signal<Integer>();
 
-	private static PlayerModel instance;
 	public SavedCharactersList charList;
 	public boolean isInvalidated;
 	public int currentCharId;
 	public Account account;
 	private boolean isAgeVerified;
 
-	public PlayerModel() {
-		super();
+	public PetsModel petsModel;
+
+	public PlayerModel(Account account) {
+		this.account = account;
+
+		this.petsModel = new PetsModel(this);
+		charList = new SavedCharactersList(this);
+
 		this.isInvalidated = true;
-	}
-
-	public static PlayerModel getInstance() {
-		if (instance == null) {
-			instance = new PlayerModel();
-		}
-
-		return instance;
 	}
 
 	public int getCurrentCharId() {
@@ -266,6 +264,5 @@ public class PlayerModel {
 		}
 		return true;
 	}
-
 
 }

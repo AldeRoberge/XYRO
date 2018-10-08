@@ -521,7 +521,7 @@ public class GameObject extends BasicObject {
 	public void onTickPos(double x, double y, int tickTime, int tickId) {
 		try {
 
-			// For some reason somtimes the map turns null! Fuck me why!
+			// For some reason sometimes the map turns null! Fuck me why!
 
 			/*System.out.println("Map: " + map);
 			System.out.println(" Map.gs:" + map.gs);

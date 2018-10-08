@@ -3,7 +3,7 @@ package rotmg.objects;
 import java.awt.Panel;
 
 import alde.flash.utils.XML;
-import rotmg.AGameSprite;
+import rotmg.RealmClient;
 import rotmg.objects.animation.AnimatedChar;
 import rotmg.pets.data.PetVO;
 import rotmg.pets.data.PetsModel;
@@ -17,13 +17,10 @@ public class Pet extends GameObject implements IInteractiveObject {
 	public AnimatedChar defaultSkin;
 	public int skinId;
 	public boolean isDefaultAnimatedChar = false;
-	private PetsModel petsModel;
 
 	public Pet(XML param1) {
 		super(param1);
 		isInteractive = true;
-		this.petsModel = PetsModel.getInstance();
-		this.petsModel.getActivePet();
 	}
 
 	/*public ToolTip getTooltip() {
@@ -31,7 +28,7 @@ public class Pet extends GameObject implements IInteractiveObject {
 		return loc1;
 	}*/
 
-	public Panel getPanel(AGameSprite param1) {
+	public Panel getPanel(RealmClient param1) {
 		//return new PetPanel(param1, this.vo);
 		return null;
 	}
@@ -68,6 +65,5 @@ public class Pet extends GameObject implements IInteractiveObject {
 		texture = loc1.image;
 		mask = loc1.mask;
 	}
-
 
 }

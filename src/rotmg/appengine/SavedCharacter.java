@@ -16,7 +16,7 @@ public class SavedCharacter {
 
 	private PetVO pet;
 
-	public SavedCharacter(XML param1, String param2) {
+	public SavedCharacter(XML param1, String param2, PetsModel petsModel) {
 		XML loc3 = null;
 		int loc4 = 0;
 		PetVO loc5 = null;
@@ -25,7 +25,7 @@ public class SavedCharacter {
 		if (this.charXML.hasOwnProperty("Pet")) {
 			loc3 = this.charXML.child("Pet");
 			loc4 = loc3.getIntAttribute("instanceId");
-			loc5 = PetsModel.getInstance().getPetVO(loc4);
+			loc5 = petsModel.getPetVO(loc4);
 			loc5.apply(loc3);
 			this.setPetVO(loc5);
 		}

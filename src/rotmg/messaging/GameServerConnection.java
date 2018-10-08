@@ -5,7 +5,7 @@ import java.util.Random;
 
 import org.osflash.signals.Signal;
 
-import rotmg.AGameSprite;
+import rotmg.RealmClient;
 import rotmg.messaging.data.SlotObjectData;
 import rotmg.net.Server;
 import rotmg.net.SocketServer;
@@ -13,7 +13,7 @@ import rotmg.objects.GameObject;
 import rotmg.objects.Player;
 import rotmg.objects.Projectile;
 
-public class GameServerConnection {
+public abstract class GameServerConnection {
 
 	public static final int FAILURE = 0;
 	public static final int CREATE_SUCCESS = 44;
@@ -115,7 +115,7 @@ public class GameServerConnection {
 
 	public static GameServerConnection instance;
 	public Signal changeMapSignal;
-	public AGameSprite gs;
+	public RealmClient gs;
 	public Server server;
 	public int gameId;
 	public boolean createCharacter;
@@ -135,139 +135,88 @@ public class GameServerConnection {
 		super();
 	}
 
-	public void chooseName(String name) {
-	}
+	public abstract void chooseName(String name);
 
-	public void createGuild(String name) {
-	}
+	public abstract void createGuild(String name);
 
-	public void connect() {
-	}
+	public abstract void connect();
 
-	public void disconnect() {
-	}
+	public abstract void disconnect();
 
-	public void checkCredits() {
-	}
+	public abstract void checkCredits();
 
-	public void escape() {
-	}
+	public abstract void escape();
 
-	public void useItem(int time, int objectId, int slotId, int itemId, double x, double y, int useType) {
-	}
+	public abstract void useItem(int time, int objectId, int slotId, int itemId, double x, double y, int useType);
 
-	public boolean useItem_new(GameObject itemOwner, int slotId) {
-		return false;
-	}
+	public abstract boolean useItem_new(GameObject itemOwner, int slotId);
 
-	public void enableJitterWatcher() {
-	}
+	public abstract void enableJitterWatcher();
 
-	public void disableJitterWatcher() {
-	}
+	public abstract void disableJitterWatcher();
 
-	public void editAccountList(int accountListId, boolean add, int objectId) {
-	}
+	public abstract void editAccountList(int accountListId, boolean add, int objectId);
 
-	public void guildRemove(String param1) {
-	}
+	public abstract void guildRemove(String param1);
 
-	public void guildInvite(String param1) {
-	}
+	public abstract void guildInvite(String param1);
 
-	public void requestTrade(String param1) {
-	}
+	public abstract void requestTrade(String param1);
 
-	public void changeTrade(boolean[] param1) {
-	}
+	public abstract void changeTrade(boolean[] param1);
 
-	public void acceptTrade(boolean[] param1, boolean[] param2) {
-	}
+	public abstract void acceptTrade(boolean[] param1, boolean[] param2);
 
-	public void cancelTrade() {
-	}
+	public abstract void cancelTrade();
 
-	public void joinGuild(String param1) {
-	}
+	public abstract void joinGuild(String param1);
 
-	public void changeGuildRank(String param1, int param2) {
-	}
+	public abstract void changeGuildRank(String param1, int param2);
 
-	public boolean isConnected() {
-		return false;
-	}
+	public abstract boolean isConnected();
 
-	public void teleport(int param1) {
-	}
+	public abstract void teleport(int param1);
 
-	public void usePortal(int param1) {
-	}
+	public abstract void usePortal(int param1);
 
-	public int getNextDamage(int param1, int param2) {
-		return 0;
-	}
+	public abstract int getNextDamage(int param1, int param2);
 
-	public void groundDamage(int param1, double param2, double param3) {
-	}
+	public abstract void groundDamage(int param1, double param2, double param3);
 
-	public void playerShoot(int param1, Projectile param2) {
-	}
+	public abstract void playerShoot(int param1, Projectile param2);
 
-	public void playerHit(int param1, int param2) {
-	}
+	public abstract void playerHit(int param1, int param2);
 
-	public void enemyHit(int param1, int param2, int param3, boolean param4) {
-	}
+	public abstract void enemyHit(int param1, int param2, int param3, boolean param4);
 
-	public void otherHit(int param1, int param2, int param3, int param4) {
-	}
+	public abstract void otherHit(int param1, int param2, int param3, int param4);
 
-	public void squareHit(int param1, int param2, int param3) {
-	}
+	public abstract void squareHit(int param1, int param2, int param3);
 
-	public void playerText(String param1) {
-	}
+	public abstract void playerText(String param1);
 
-	public boolean invSwap(Player player, GameObject sourceObj, int slotId1, int itemId1, GameObject targetObj,
-			int slotId2, int itemId2) {
-		return false;
-	}
+	public abstract boolean invSwap(Player player, GameObject sourceObj, int slotId1, int itemId1, GameObject targetObj, int slotId2, int itemId2);
 
-	public boolean invSwapRaw(Player player, int objectId1, int slotId1, int objectType1, int objectId2, int slotId2,
-			int objectType2) {
-		return false;
-	}
+	public abstract boolean invSwapRaw(Player player, int objectId1, int slotId1, int objectType1, int objectId2, int slotId2, int objectType2);
 
-	public boolean invSwapPotion(Player param1, GameObject param2, int param3, int param4, GameObject param5,
-			int param6, int param7) {
-		return false;
-	}
+	public abstract boolean invSwapPotion(Player param1, GameObject param2, int param3, int param4, GameObject param5, int param6, int param7);
 
-	public void invDrop(GameObject param1, int param2, int param3) {
-	}
+	public abstract void invDrop(GameObject param1, int param2, int param3);
 
-	public void setCondition(int param1, double param2) {
-	}
+	public abstract void setCondition(int param1, double param2);
 
-	public void buy(int param1, int param2) {
-	}
+	public abstract void buy(int param1, int param2);
 
-	public void questFetch() {
-	}
+	public abstract void questFetch();
 
-	public void questRedeem(String param1, List<SlotObjectData> param2) {
-	}
+	public abstract void questRedeem(String param1, List<SlotObjectData> param2);
 
-	public void keyInfoRequest(int param1) {
-	}
+	public abstract void keyInfoRequest(int param1);
 
-	public void claimRewardsMessageHack(String claimKey, String type) {
-	}
+	public abstract void claimRewardsMessageHack(String claimKey, String type);
 
-	public void gotoQuestRoom() {
-	}
+	public abstract void gotoQuestRoom();
 
-	public void petCommand(int commandId, int petId) {
-	}
+	public abstract void petCommand(int commandId, int petId);
 
 }

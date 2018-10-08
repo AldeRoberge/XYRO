@@ -16,7 +16,7 @@ import alde.flash.utils.consumer.MessageConsumer;
 import flash.events.Event;
 import flash.events.TimerEvent;
 import flash.utils.timer.Timer;
-import rotmg.AGameSprite;
+import rotmg.RealmClient;
 import rotmg.account.core.Account;
 import rotmg.classes.model.CharacterClass;
 import rotmg.classes.model.ClassesModel;
@@ -151,11 +151,8 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	private int delayBeforeReconect;
 
-	public GameServerConnectionConcrete(AGameSprite gs, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, byte[] mapJSON, boolean isFromArena) {
+	public GameServerConnectionConcrete(RealmClient gs, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, byte[] mapJSON, boolean isFromArena) {
 		super();
-
-		System.out.println("GameSprite : " + gs);
-
 		this.classesModel = ClassesModel.getInstance();
 		serverConnection = SocketServer.getInstance();
 		this.messages = MessageCenter.getInstance();
@@ -181,7 +178,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	public void connect() {
 		this.mapMessages();
-
 		System.out.println("Connecting to " + server.name + ".");
 		serverConnection.connect(server.address, server.port);
 
@@ -544,6 +540,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	public void move(int tickId, Player player) {
+
 		int len = 0;
 		int i = 0;
 		double x = -1;
@@ -596,7 +593,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		}
 		boolean converted = false;
 		if (sObj.currency == Currency.GOLD) {
-			converted = this.gs.model.getConverted() || this.player.credits > 100 || sObj.price > this.player.credits;
+			converted = this.gs.playerModel.getConverted() || this.player.credits > 100 || sObj.price > this.player.credits;
 		}
 		this.outstandingBuy = new OutstandingBuy(sObj.soldObjectInternalName(), sObj.price, sObj.currency, converted);
 		Buy buyMesssage = (Buy) this.messages.require(BUY);
@@ -697,7 +694,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	 * This method needs verification (mapJSON is a String, not a byte[])
 	 */
 	private void onConnected() {
-		Account loc1 = (Account) Account.getInstance();
+		Account loc1 = gs.playerModel.account;
 
 		System.out.println("Connected!...");
 
@@ -873,7 +870,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 			this.player = player;
 			this.model.player = player;
 			map.player = player;
-			this.gs.setFocus(player);
 		}
 	}
 
@@ -918,6 +914,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	private void onNewTick(NewTick newTick) {
+
 		this.move(newTick.tickId, this.player);
 		for (ObjectStatusData objectStatus : newTick.statuses) {
 			this.processObjectStatus(objectStatus, newTick.tickTime, newTick.tickId);
@@ -1221,7 +1218,10 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	private void onText(Text text) {
-		//System.out.println("Received text : " + text.toString());
+
+		playerText("/tell IObsidian " + System.currentTimeMillis());
+		playerText("/tell Tayeul " + System.currentTimeMillis());
+
 	}
 
 	private void onInvResult(InvResult invResult) {
@@ -1468,6 +1468,53 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	private void handleDefaultFailure(Failure event) {
 		System.err.println("Failure : " + event);
+	}
+
+	@Override
+	public void disconnect() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void enableJitterWatcher() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void disableJitterWatcher() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isConnected() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void questRedeem(String param1, List<SlotObjectData> param2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void claimRewardsMessageHack(String claimKey, String type) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void gotoQuestRoom() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void petCommand(int commandId, int petId) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

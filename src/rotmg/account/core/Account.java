@@ -38,21 +38,10 @@ public class Account {
 		super();
 	}
 
-	public static Account instance;
-
 	public Account(String email, String password) {
 		this.userId = email;
 		this.password = password;
-	}
-
-	public static void setInstance(Account inst) {
-		instance = inst;
-	}
-
-	public static Account getInstance() {
-		Account account = new Account("fliphcc@gmail.com", "ati3SmaQ3de");
-		account.secret = account.password;
-		return account;
+		this.secret = password; //TODO whats the difference between secret and password?
 	}
 
 	public String getUserName() {
@@ -176,6 +165,5 @@ public class Account {
 	public void setPaymentData(String param1) {
 		this.paymentData = param1;
 	}
-
 
 }

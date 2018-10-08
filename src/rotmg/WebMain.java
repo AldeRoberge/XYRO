@@ -1,41 +1,41 @@
 package rotmg;
 
 import rotmg.account.core.Account;
-import rotmg.commands.PlayGameCommand;
+import rotmg.account.core.services.AppEngine;
+import rotmg.appengine.SavedCharacter;
+import rotmg.appengine.SavedCharactersList;
 import rotmg.core.model.PlayerModel;
 import rotmg.net.Server;
 import rotmg.parameters.Parameters;
+import rotmg.pets.data.PetsModel;
 import rotmg.util.AssetLoader;
+import rotmg.xyro.Servers;
 
-//[SWF(width=800,height=600,frameRate=60,backgroundColor=000000)]
 public class WebMain {
 
-	public WebMain() {
-		super();
-		this.setup();
-	}
-
-	private void setup() {
+	// Following is a loose implementation of PlayGameCommand's makeGameView
+	public static void main(String[] args) {
 		new AssetLoader().load();
 
-		PlayGameCommand playGameCommand = new PlayGameCommand();
+		Account account = new Account("clevertonx@gmail.com", "harryporco1");
 
-		// Following is a loose implementation of PlayGameCommand's makeGameView
+		PlayerModel i = new PlayerModel(account);
+		i.currentCharId = i.charList.savedChars.get(0).charId();
 
-		PlayerModel p = PlayerModel.getInstance();
-		p.account = Account.getInstance();
-		p.currentCharId = 2;
-		p.setIsAgeVerified(true);
-
-		Server loc1 = new Server().setAddress("54.183.179.205").setPort(2050);
+		i.setIsAgeVerified(true);
+		Server server = Servers.getInstance().getServerByName("USEast2");
 
 		boolean createCharacter = false;
 		int keyTime = -1;
 		byte[] key = new byte[0];
 		boolean isFromArena = false;
+		boolean isNewGame = true;
 
-		AGameSprite g = new AGameSprite(loc1, Parameters.NEXUS_GAMEID, createCharacter, p.currentCharId, keyTime, key, p, null, isFromArena);
-		g.connect();
+		RealmClient g = new RealmClient(i, server, Parameters.NEXUS_GAMEID, createCharacter, i.currentCharId, keyTime, key, isNewGame, isFromArena);
+	
+	
+		
+	
 	}
 
 }

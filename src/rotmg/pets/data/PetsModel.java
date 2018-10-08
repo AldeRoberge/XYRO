@@ -17,23 +17,18 @@ public class PetsModel {
 
 	static public PetsModel instance;
 	public NotifyActivePetUpdated notifyActivePetUpdated = NotifyActivePetUpdated.getInstance();
-	public PlayerModel playerModel = PlayerModel.getInstance();
+	public PlayerModel playerModel;
 	private Map<Integer, PetVO> hash;
 	private List<PetVO> pets;
 	private XML yardXmlData;
 	private int type;
 	private PetVO activePet;
 
-	public PetsModel() {
+	public PetsModel(PlayerModel playerModel) {
+		this.playerModel = playerModel;
+
 		this.hash = new Dictionary<>();
 		this.pets = new ArrayList<PetVO>();
-	}
-
-	public static PetsModel getInstance() {
-		if (instance == null) {
-			instance = new PetsModel();
-		}
-		return instance;
 	}
 
 	public PetVO getPetVO(int param1) {
@@ -67,7 +62,7 @@ public class PetsModel {
 		this.activePet = param1;
 		SavedCharacter loc2 = this.playerModel.getCharacterById(this.playerModel.currentCharId);
 		if (loc2 == null) {
-			loc2.setPetVO(this.activePet);
+			//loc2.setPetVO(this.activePet);
 		}
 		this.notifyActivePetUpdated.dispatch();
 	}
@@ -144,6 +139,5 @@ public class PetsModel {
 		this.pets = new ArrayList<PetVO>();
 		this.removeActivePet();
 	}
-
 
 }

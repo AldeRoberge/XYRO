@@ -4,7 +4,7 @@ import static flash.utils.timer.getTimer.getTimer;
 
 import org.osflash.signals.Signal;
 
-import flash.events.Event;
+import rotmg.appengine.SavedCharacter;
 import rotmg.constants.GeneralConstants;
 import rotmg.core.model.MapModel;
 import rotmg.core.model.PlayerModel;
@@ -21,42 +21,60 @@ import rotmg.objects.Player;
 import rotmg.parameters.Parameters;
 import rotmg.stage3D.Renderer;
 import rotmg.util.PointUtil;
+import rotmg.xyro.Servers;
 
-public class AGameSprite {
+/**
+ * This is a compilation of GameSprite, AGameSprite, PlayGameCommand and GameInitData.
+ * @author Alde
+ *
+ */
+public class RealmClient {
 
 	public boolean isNexus = false;
-
 	public MapModel mapModel;
-
 	private boolean isGameStarted;
-
 	public final Signal closed = new Signal();
-
 	public boolean isEditor;
-
 	public int lastUpdate;
 
 	public MoveRecords moveRecords;
-
 	public AbstractMap map;
 
-	public PlayerModel model;
-
+	public PlayerModel playerModel;
 	public GameServerConnection gsc;
 
-	public AGameSprite(Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, PlayerModel model, byte[] mapJSON, boolean isFromArena) {
-		super();
+	public static final int RECONNECT_DELAY = 2000;
 
-		this.model = model;
+	public RealmClient(PlayerModel playerModel, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, boolean isNewGame, boolean isFromArena) {
 
+		this.playerModel = playerModel;
+
+		this.updatePet(isNewGame);
+
+		if (server == null) {
+			server = Servers.getInstance().getBestServer(playerModel);
+		}
+
+		int actual_keyTime = isNewGame ? -1 : keyTime;
+		this.playerModel.currentCharId = charId;
 		this.moveRecords = new MoveRecords();
 
 		map = new Map(this);
-		gsc = new GameServerConnectionConcrete(this, server, gameId, createCharacter, charId, keyTime, key, mapJSON, isFromArena);
+		gsc = new GameServerConnectionConcrete(this, server, gameId, createCharacter, charId, actual_keyTime, key, null, isFromArena);
+
+		connect();
 	}
 
-	public void setFocus(GameObject param1) {
-		param1 = map.player;
+	private void updatePet(boolean isNewGame) {
+		SavedCharacter loc1 = this.playerModel.getCharacterById(this.playerModel.currentCharId);
+		if (loc1 != null) {
+			this.playerModel.petsModel.setActivePet(loc1.getPetVO());
+		} else {
+			if (this.playerModel.currentCharId != 0 && this.playerModel.petsModel.getActivePet() != null && !isNewGame) {
+				return;
+			}
+			this.playerModel.petsModel.setActivePet(null);
+		}
 	}
 
 	public void applyMapInfo(MapInfo param1) {
@@ -95,10 +113,6 @@ public class AGameSprite {
 		this.mapModel.currentInteractiveTarget = loc3;
 	}
 
-	private boolean isPetMap() {
-		return true;
-	}
-
 	public void connect() {
 		if (!this.isGameStarted) {
 			this.isGameStarted = true;
@@ -117,15 +131,9 @@ public class AGameSprite {
 		}
 	}
 
-	private void onMoneyChanged(Event param1) {
-		gsc.checkCredits();
-	}
-
 	public boolean evalIsNotInCombatMapArea() {
 		return map.name.equals(Map.NEXUS) || map.name.equals(Map.VAULT) || map.name.equals(Map.GUILD_HALL) || map.name.equals(Map.CLOTH_BAZAAR) || map.name.equals(Map.NEXUS_EXPLANATION)
 				|| map.name.equals(Map.DAILY_QUEST_ROOM);
 	}
 
-	public void showPetToolTip(boolean param1) {
-	}
 }

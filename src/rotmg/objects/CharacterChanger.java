@@ -3,7 +3,7 @@ package rotmg.objects;
 import java.awt.Panel;
 
 import alde.flash.utils.XML;
-import rotmg.AGameSprite;
+import rotmg.RealmClient;
 
 public class CharacterChanger extends GameObject implements IInteractiveObject {
 
@@ -13,7 +13,7 @@ public class CharacterChanger extends GameObject implements IInteractiveObject {
 	}
 
 	@Override
-	public Panel getPanel(AGameSprite param1) {
+	public Panel getPanel(RealmClient param1) {
 		// TODO Auto-generated method stub
 		return null;
 	}

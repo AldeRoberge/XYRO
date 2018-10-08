@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import com.hurlant.crypto.symmetric.ICipher;
 
-import rotmg.AGameSprite;
+import rotmg.RealmClient;
 import rotmg.messaging.GameServerConnectionConcrete;
 import rotmg.net.impl.Message;
 import rotmg.net.impl.MessageCenter;
@@ -111,8 +111,7 @@ public class SocketServer {
 							lastTimePacketReceived = System.currentTimeMillis();
 							bufferIndex += bytesRead;
 							while (bufferIndex >= 5) {
-								int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(buffer[0]).put(buffer[1])
-										.put(buffer[2]).put(buffer[3]).rewind()).getInt();
+								int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(buffer[0]).put(buffer[1]).put(buffer[2]).put(buffer[3]).rewind()).getInt();
 								if (buffer.length < packetLength) {
 									buffer = Arrays.copyOf(buffer, packetLength);
 								}

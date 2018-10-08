@@ -12,7 +12,6 @@ import rotmg.parameters.Parameters;
 public class Servers {
 
 	private static final Vector<Server> servers = new Vector<Server>(0);
-	public PlayerModel model = PlayerModel.getInstance();
 
 	public static Servers instance;
 
@@ -27,13 +26,12 @@ public class Servers {
 		return servers;
 	}
 
-	public Vector<Server> makeListOfServers(XML data) {
+	public void makeListOfServers(XML data) {
 		List<XML> loc1 = data.child("Servers").children("Server");
-		Vector<Server> loc2 = new Vector<Server>(0);
+
 		for (XML loc3 : loc1) {
-			loc2.add(this.makeServer(loc3));
+			servers.add(this.makeServer(loc3));
 		}
-		return loc2;
 	}
 
 	private Server makeServer(XML param1) {
@@ -41,21 +39,19 @@ public class Servers {
 				.setUsage(param1.getDoubleValue("Usage")).setIsAdminOnly(param1.hasOwnProperty("AdminOnly"));
 	}
 
-	public Server getBestServer() {
+	public Server getBestServer(PlayerModel playerModel) {
 		int loc7 = 0;
 		double loc8 = 0;
-		boolean loc1 = this.model.isAdmin();
-		LatLong loc2 = this.model.getMyPos();
 		Server loc3 = null;
 		double loc4 = Double.MAX_VALUE;
 		int loc5 = Integer.MAX_VALUE;
 		for (Server loc6 : servers) {
-			if (!(loc6.isFull() && !loc1)) {
+			if (!(loc6.isFull() && !playerModel.isAdmin())) {
 				if (loc6.name.equals(Parameters.data.preferredServer)) {
 					return loc6;
 				}
 				loc7 = loc6.priority();
-				loc8 = LatLong.distance(loc2, loc6.latLong);
+				loc8 = LatLong.distance(playerModel.getMyPos(), loc6.latLong);
 				if (loc7 < loc5 || loc7 == loc5 && loc8 < loc4) {
 					loc3 = loc6;
 					loc4 = loc8;
@@ -74,7 +70,20 @@ public class Servers {
 				return loc2.name;
 			}
 		}
+
+		System.err.println("No server with address '" + param1 + "'!");
 		return "";
+	}
+
+	public Server getServerByName(String name) {
+		for (Server loc2 : servers) {
+			if (loc2.name.equals(name)) {
+				return loc2;
+			}
+		}
+
+		System.err.println("No server with name '" + name + "'!");
+		return null;
 	}
 
 }

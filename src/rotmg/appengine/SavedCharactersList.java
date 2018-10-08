@@ -5,11 +5,20 @@ import alde.flash.utils.XML;
 import flash.events.Event;
 import flash.utils.Dictionary;
 import rotmg.account.core.Account;
+import rotmg.account.core.services.AppEngine;
+import rotmg.account.securityQuestions.data.SecurityQuestionsModel;
+import rotmg.core.model.PlayerModel;
 import rotmg.net.LatLong;
 import rotmg.objects.ObjectLibrary;
 import rotmg.objects.Player;
+import rotmg.pets.data.PetsModel;
+import rotmg.xyro.Servers;
 
-public class SavedCharactersList extends Event {
+/**
+ * CharacterList
+ *
+ */
+public class SavedCharactersList {
 
 	public static final String SAVED_CHARS_LIST = "SAVED_CHARS_LIST";
 
@@ -52,35 +61,71 @@ public class SavedCharactersList extends Event {
 	private XML charsXML;
 	private Account account;
 
-	public SavedCharactersList(String param1) {
-		super(SAVED_CHARS_LIST);
+	public SavedCharactersList(PlayerModel playerModel) {
+		account = playerModel.account;
 
-		Account loc5 = null;
+		String charListString = getCharList();
+
 		this.savedChars = new Vector<SavedCharacter>();
 		this.charStats = new Dictionary<>();
 		this.news = new Vector<SavedNewsItem>();
-		this.origData = param1;
+		this.origData = charListString;
 		this.charsXML = new XML(this.origData);
 		XML loc2 = this.charsXML.child("Account");
 		this.parseUserData(loc2);
 		this.parseGuildData(loc2);
-		this.parseCharacterData();
+		this.parseCharacterData(playerModel.petsModel);
 		this.parseCharacterStatsData();
 		this.parseNewsData();
 		this.parseGeoPositioningData();
 		this.parseSalesForceData();
-		this.reportUnlocked();
 
-		loc5 = Account.getInstance();
-		loc5.reportIntStat("BestLevel", this.bestOverallLevel());
-		loc5.reportIntStat("BestFame", this.bestOverallFame());
-		loc5.reportIntStat("NumStars", this.numStars);
-		loc5.verify(loc2.hasOwnProperty("VerifiedEmail"));
+		account.reportIntStat("BestLevel", this.bestOverallLevel());
+		account.reportIntStat("BestFame", this.bestOverallFame());
+		account.reportIntStat("NumStars", this.numStars);
+		account.verify(loc2.hasOwnProperty("VerifiedEmail"));
 
 		this.classAvailability = new Dictionary<>();
 		for (XML loc4 : this.charsXML.child("ClassAvailabilityList").children("ClassAvailability")) {
 			this.classAvailability.put(loc4.getIntAttribute("id"), loc4.toString());
 		}
+	}
+
+	private String getCharList() {
+
+		String charListString = AppEngine.getCharListAsString(account);
+
+		System.out.println("Char list string : " + charListString);
+
+		XML charList = new XML(charListString);
+
+		Servers.getInstance().makeListOfServers(charList);
+
+		if (charList.hasOwnProperty("Error")) {
+			System.err.println("Error : " + charList.toString());
+			String error = charList.child("Error").toString();
+
+			if (error.equals("Account credentials not valid")) {
+				System.err.println("Wrong credentials!");
+			} else if (error.equals("Account is under maintenance")) {
+				System.err.println("This account has been banned");
+			}
+
+			System.err.println("Error : " + error);
+
+		} else if (charList.hasOwnProperty("MigrateStatus")) {
+			System.err.println("Account requires migration!");
+		} else {
+			if (charList.hasOwnProperty("Account")) {
+				account.userDisplayName = charList.child("Account").getValue("Name");
+				account.paymentProvider = charList.child("Account").getValue("PaymentProvider");
+				if (charList.child("Account").hasOwnProperty("PaymentData")) {
+					account.paymentData = charList.child("Account").getValue("PaymentData");
+				}
+			}
+		}
+
+		return charListString;
 	}
 
 	public SavedCharacter getCharById(int param1) {
@@ -120,11 +165,11 @@ public class SavedCharactersList extends Event {
 		}
 	}
 
-	private void parseCharacterData() {
+	private void parseCharacterData(PetsModel petsmodel) {
 		this.nextCharId = this.charsXML.getIntAttribute("nextCharId");
 		this.maxNumChars = this.charsXML.getIntAttribute("maxNumChars");
 		for (XML loc1 : this.charsXML.children("Char")) {
-			this.savedChars.add(new SavedCharacter(loc1, this.name));
+			this.savedChars.add(new SavedCharacter(loc1, this.name, petsmodel));
 			this.numChars++;
 		}
 		//this.savedChars.sort(SavedCharacter.compare);
@@ -145,8 +190,7 @@ public class SavedCharactersList extends Event {
 	private void parseNewsData() {
 		XML loc1 = this.charsXML.child("News");
 		for (XML loc2 : loc1.children("Item")) {
-			this.news.add(new SavedNewsItem(loc2.getValue("Icon"), loc2.getValue("Title"), loc2.getValue("TagLine"),
-					loc2.getValue("Link"), loc2.getIntValue("Date")));
+			this.news.add(new SavedNewsItem(loc2.getValue("Icon"), loc2.getValue("Title"), loc2.getValue("TagLine"), loc2.getValue("Link"), loc2.getIntValue("Date")));
 		}
 	}
 
@@ -253,34 +297,8 @@ public class SavedCharactersList extends Event {
 		return loc3;
 	}
 
-	public Event clone() {
-		return new SavedCharactersList(this.origData);
-	}
-
 	public String toString() {
 		return "[" + " numChars: " + this.numChars + " maxNumChars: " + this.maxNumChars + " ]";
-	}
-
-	private void reportUnlocked() {
-		this.account = Account.getInstance();
-		this.updateAccount();
-	}
-
-	private void updateAccount() {
-		XML loc3 = null;
-		int loc4 = 0;
-		int loc1 = 0;
-		int loc2 = 0;
-		while (loc2 < ObjectLibrary.playerChars.size()) {
-			loc3 = ObjectLibrary.playerChars.get(loc2);
-			loc4 = loc3.getIntAttribute("type");
-			if (this.levelRequirementsMet(loc4)) {
-				this.account.reportIntStat(loc3.getIntAttribute("id") + "Unlocked", 1);
-				loc1++;
-			}
-			loc2++;
-		}
-		this.account.reportIntStat("ClassesUnlocked", loc1);
 	}
 
 }

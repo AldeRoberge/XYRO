@@ -5,7 +5,7 @@ import org.osflash.signals.Signal;
 import alde.flash.utils.Vector;
 import flash.geom.Point;
 import flash.utils.Dictionary;
-import rotmg.AGameSprite;
+import rotmg.RealmClient;
 import rotmg.objects.BasicObject;
 import rotmg.objects.GameObject;
 import rotmg.objects.Merchant;
@@ -24,7 +24,7 @@ public abstract class AbstractMap {
 	public final Dictionary<Integer, BasicObject> boDict = new Dictionary<>(); // Basic Objects
 	public final Dictionary<Integer, GameObject> goDict = new Dictionary<>(); // Game Objects
 
-	public AGameSprite gs;
+	public RealmClient gs;
 	public String name;
 	public Player player = null;
 	public boolean showDisplays;

@@ -1,12 +1,12 @@
 package rotmg.appengine.api;
 
-import org.osflash.OnceSignal;
+import org.osflash.signals.Signal;
 
 import alde.flash.utils.Vector;
 
 public interface RetryLoader {
 
-	OnceSignal complete = new OnceSignal();
+	Signal complete = new Signal();
 
 	void setMaxRetries(int param1);
 
