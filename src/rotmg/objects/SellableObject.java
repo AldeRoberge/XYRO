@@ -5,7 +5,6 @@ import flash.display.BitmapData;
 
 public class SellableObject extends GameObject {
 
-
 	public int price = 0;
 	public int currency = -1;
 	public int rankReq = 0;

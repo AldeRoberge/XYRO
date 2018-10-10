@@ -20,9 +20,9 @@ import rotmg.util.IntPoint;
  */
 public abstract class AbstractMap {
 
-	public final Vector<Square> squares = new Vector<Square>(); // Tiles
-	public final Dictionary<Integer, BasicObject> boDict = new Dictionary<>(); // Basic Objects
-	public final Dictionary<Integer, GameObject> goDict = new Dictionary<>(); // Game Objects
+	public final static Vector<Square> squares = new Vector<Square>(); // Tiles
+	public final static Dictionary<Integer, BasicObject> boDict = new Dictionary<>(); // Basic Objects
+	public final static Dictionary<Integer, GameObject> goDict = new Dictionary<>(); // Game Objects
 
 	public RealmClient gs;
 	public String name;

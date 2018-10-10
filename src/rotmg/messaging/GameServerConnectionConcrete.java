@@ -281,7 +281,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 		loc1.map(LOGIN_REWARD_MSG).toMessage(ClaimDailyRewardResponse.class).toMethod(new MessageConsumer<>(this::onLoginRewardResponse));
 		loc1.map(RESKIN).toMessage(Reskin.class);
 		loc1.map(TEXT).toMessage(Text.class).toMethod(new MessageConsumer<>(this::onText));
-
 	}
 
 	public void onHatchPet(HatchPetMessage param1) {
@@ -1184,9 +1183,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	private void processObjectStatus(ObjectStatusData objectStatus, int tickTime, int tickId) {
 		int oldLevel = 0;
-		int oldExp = 0;
-		List newUnlocks = null;
-		CharacterClass type = null;
 		AbstractMap map = this.gs.map;
 		GameObject go = map.goDict.get(objectStatus.objectId);
 		if (go == null) {
@@ -1204,7 +1200,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 		if (player != null) {
 			oldLevel = player.level;
-			oldExp = player.exp;
 		}
 		this.updateGameObject(go, objectStatus.stats, isMyObject);
 
@@ -1218,9 +1213,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	private void onText(Text text) {
-
-		playerText("/tell IObsidian " + System.currentTimeMillis());
-		playerText("/tell Tayeul " + System.currentTimeMillis());
 
 	}
 

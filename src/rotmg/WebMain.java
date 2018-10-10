@@ -1,13 +1,10 @@
 package rotmg;
 
+import oryx2D.Window;
 import rotmg.account.core.Account;
-import rotmg.account.core.services.AppEngine;
-import rotmg.appengine.SavedCharacter;
-import rotmg.appengine.SavedCharactersList;
 import rotmg.core.model.PlayerModel;
 import rotmg.net.Server;
 import rotmg.parameters.Parameters;
-import rotmg.pets.data.PetsModel;
 import rotmg.util.AssetLoader;
 import rotmg.xyro.Servers;
 
@@ -15,6 +12,9 @@ public class WebMain {
 
 	// Following is a loose implementation of PlayGameCommand's makeGameView
 	public static void main(String[] args) {
+
+		Window.main(null);
+
 		new AssetLoader().load();
 
 		Account account = new Account("clevertonx@gmail.com", "harryporco1");
@@ -32,10 +32,7 @@ public class WebMain {
 		boolean isNewGame = true;
 
 		RealmClient g = new RealmClient(i, server, Parameters.NEXUS_GAMEID, createCharacter, i.currentCharId, keyTime, key, isNewGame, isFromArena);
-	
-	
-		
-	
+
 	}
 
 }

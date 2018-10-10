@@ -5,7 +5,6 @@ import flash.display.BitmapData;
 import flash.utils.Dictionary;
 import rotmg.objects.animation.AnimatedChar;
 
-
 /**
  * This is a 99.9% match.
  * I made it abstract. Use TextureDataConcrete.

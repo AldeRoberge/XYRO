@@ -530,11 +530,12 @@ public class GameObject extends BasicObject {
 
 			if (map == null) {
 				System.out.println("Null object type : " + objectType);
+			} else {
+				if (this.myLastTickId < map.gs.gsc.lastTickId) {
+					this.moveTo(this.tickPosition.x, this.tickPosition.y);
+				}
 			}
 
-			if (this.myLastTickId < map.gs.gsc.lastTickId) {
-				this.moveTo(this.tickPosition.x, this.tickPosition.y);
-			}
 			this.lastTickUpdateTime = map.gs.lastUpdate;
 			this.tickPosition.x = x;
 			this.tickPosition.y = y;
