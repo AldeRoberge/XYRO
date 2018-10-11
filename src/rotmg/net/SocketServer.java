@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import com.hurlant.crypto.symmetric.ICipher;
 
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 import rotmg.messaging.GameServerConnectionConcrete;
 import rotmg.net.impl.Message;
 import rotmg.net.impl.MessageCenter;

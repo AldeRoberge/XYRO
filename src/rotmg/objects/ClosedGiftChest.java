@@ -5,11 +5,10 @@ import java.awt.Panel;
 import alde.flash.utils.XML;
 import rotmg.GameSprite;
 
-public class CharacterChanger extends GameObject implements IInteractiveObject {
+public class ClosedGiftChest extends GameObject implements IInteractiveObject {
 
-	public CharacterChanger(XML param1) {
-		super(param1);
-		isInteractive = true;
+	public ClosedGiftChest(XML objectXML) {
+		super(objectXML);
 	}
 
 	@Override
@@ -17,6 +16,5 @@ public class CharacterChanger extends GameObject implements IInteractiveObject {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

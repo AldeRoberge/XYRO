@@ -3,10 +3,9 @@ package rotmg.objects;
 import java.awt.Panel;
 
 import alde.flash.utils.XML;
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 import rotmg.objects.animation.AnimatedChar;
 import rotmg.pets.data.PetVO;
-import rotmg.pets.data.PetsModel;
 import rotmg.util.AnimatedChars;
 import rotmg.util.MaskedImage;
 
@@ -28,7 +27,7 @@ public class Pet extends GameObject implements IInteractiveObject {
 		return loc1;
 	}*/
 
-	public Panel getPanel(RealmClient param1) {
+	public Panel getPanel(GameSprite param1) {
 		//return new PetPanel(param1, this.vo);
 		return null;
 	}

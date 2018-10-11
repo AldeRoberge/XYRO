@@ -5,7 +5,7 @@ import java.util.Random;
 
 import org.osflash.signals.Signal;
 
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 import rotmg.messaging.data.SlotObjectData;
 import rotmg.net.Server;
 import rotmg.net.SocketServer;
@@ -115,7 +115,7 @@ public abstract class GameServerConnection {
 
 	public static GameServerConnection instance;
 	public Signal changeMapSignal;
-	public RealmClient gs;
+	public GameSprite gs;
 	public Server server;
 	public int gameId;
 	public boolean createCharacter;

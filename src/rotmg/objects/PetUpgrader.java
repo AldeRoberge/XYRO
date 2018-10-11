@@ -1,3 +1,4 @@
+
 package rotmg.objects;
 
 import java.awt.Panel;
@@ -5,10 +6,10 @@ import java.awt.Panel;
 import alde.flash.utils.XML;
 import rotmg.GameSprite;
 
-public class CharacterChanger extends GameObject implements IInteractiveObject {
+public class PetUpgrader extends GameObject implements IInteractiveObject {
 
-	public CharacterChanger(XML param1) {
-		super(param1);
+	public PetUpgrader(XML objectXML) {
+		super(objectXML);
 		isInteractive = true;
 	}
 

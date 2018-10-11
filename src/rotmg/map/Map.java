@@ -5,7 +5,7 @@ import flash.display.BitmapData;
 import flash.geom.ColorTransform;
 import flash.geom.Point;
 import flash.utils.Dictionary;
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 import rotmg.model.GameModel;
 import rotmg.objects.BasicObject;
 import rotmg.objects.GameObject;
@@ -63,7 +63,7 @@ public class Map extends AbstractMap {
 	private boolean lastSoftwareClear = false;
 	private Vector<Object3DStage3D> graphicsData3d;
 
-	public Map(RealmClient param1) {
+	public Map(GameSprite param1) {
 		super();
 		this.objsToAdd = new Vector<>();
 		this.idsToRemove = new Vector<>();

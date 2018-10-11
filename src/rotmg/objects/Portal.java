@@ -3,7 +3,7 @@ package rotmg.objects;
 import java.awt.Panel;
 
 import alde.flash.utils.XML;
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 
 public class Portal extends GameObject implements IInteractiveObject {
 
@@ -22,7 +22,7 @@ public class Portal extends GameObject implements IInteractiveObject {
 		this.lockedPortal = param1.hasOwnProperty("LockedPortal");
 	}
 
-	public Panel getPanel(RealmClient param1) {
+	public Panel getPanel(GameSprite param1) {
 		// TODO Auto-generated method stub
 		return null;
 	}

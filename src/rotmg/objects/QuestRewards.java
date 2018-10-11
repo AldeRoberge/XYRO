@@ -5,10 +5,10 @@ import java.awt.Panel;
 import alde.flash.utils.XML;
 import rotmg.GameSprite;
 
-public class CharacterChanger extends GameObject implements IInteractiveObject {
+public class QuestRewards extends GameObject implements IInteractiveObject {
 
-	public CharacterChanger(XML param1) {
-		super(param1);
+	public QuestRewards(XML objectXML) {
+		super(objectXML);
 		isInteractive = true;
 	}
 
@@ -17,6 +17,5 @@ public class CharacterChanger extends GameObject implements IInteractiveObject {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

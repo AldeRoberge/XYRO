@@ -16,7 +16,7 @@ import alde.flash.utils.consumer.MessageConsumer;
 import flash.events.Event;
 import flash.events.TimerEvent;
 import flash.utils.timer.Timer;
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 import rotmg.account.core.Account;
 import rotmg.classes.model.CharacterClass;
 import rotmg.classes.model.ClassesModel;
@@ -151,7 +151,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
 	private int delayBeforeReconect;
 
-	public GameServerConnectionConcrete(RealmClient gs, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, byte[] mapJSON, boolean isFromArena) {
+	public GameServerConnectionConcrete(GameSprite gs, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, byte[] mapJSON, boolean isFromArena) {
 		super();
 		this.classesModel = ClassesModel.getInstance();
 		serverConnection = SocketServer.getInstance();

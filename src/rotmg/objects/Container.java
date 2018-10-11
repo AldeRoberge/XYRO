@@ -3,7 +3,7 @@ package rotmg.objects;
 import java.awt.Panel;
 
 import alde.flash.utils.XML;
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 import rotmg.map.Map;
 import rotmg.sound.SoundEffectLibrary;
 import rotmg.util.PointUtil;
@@ -48,7 +48,7 @@ public class Container extends GameObject implements IInteractiveObject {
 		return true;
 	}
 
-	public Panel getPanel(RealmClient param1) {
+	public Panel getPanel(GameSprite param1) {
 		/*Player loc2 = param1 != null && param1.map ? param1.map.player_ : null;
 		ContainerGrid loc3 = new ContainerGrid(this, loc2);
 		return loc3;*/

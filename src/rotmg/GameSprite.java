@@ -28,7 +28,7 @@ import rotmg.xyro.Servers;
  * @author Alde
  *
  */
-public class RealmClient {
+public class GameSprite {
 
 	public boolean isNexus = false;
 	public MapModel mapModel;
@@ -45,7 +45,7 @@ public class RealmClient {
 
 	public static final int RECONNECT_DELAY = 2000;
 
-	public RealmClient(PlayerModel playerModel, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, boolean isNewGame, boolean isFromArena) {
+	public GameSprite(PlayerModel playerModel, Server server, int gameId, boolean createCharacter, int charId, int keyTime, byte[] key, boolean isNewGame, boolean isFromArena) {
 
 		this.playerModel = playerModel;
 

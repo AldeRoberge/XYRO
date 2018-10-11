@@ -96,9 +96,9 @@ public class TextureDataConcrete extends TextureData {
 				texture = image.image;
 				mask = image.mask;
 			} catch (Exception e) {
-				e.printStackTrace();
+				
 				System.err.println("Error loading AnimatedTexture for '" + param2 + "'.");
-
+				//e.printStackTrace();
 				//System.exit(0);
 			}
 			break;

@@ -3,10 +3,10 @@ package rotmg.objects;
 
 import java.awt.Panel;
 
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 
 
 public interface IInteractiveObject {
-	Panel getPanel(RealmClient param1);
+	Panel getPanel(GameSprite param1);
 
 }

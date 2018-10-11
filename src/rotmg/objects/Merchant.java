@@ -7,7 +7,7 @@ import alde.flash.utils.XML;
 import flash.display.BitmapData;
 import flash.geom.ColorTransform;
 import flash.geom.Matrix;
-import rotmg.RealmClient;
+import rotmg.GameSprite;
 import rotmg.map.Map;
 import rotmg.util.IntPoint;
 
@@ -184,7 +184,7 @@ public class Merchant extends SellableObject implements IInteractiveObject {
 	}
 
 	@Override
-	public Panel getPanel(RealmClient param1) {
+	public Panel getPanel(GameSprite param1) {
 		// TODO Auto-generated method stub
 		return null;
 	}

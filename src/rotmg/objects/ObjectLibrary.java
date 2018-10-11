@@ -47,42 +47,42 @@ public class ObjectLibrary {
 	private static String currentDungeon = "";
 
 	static {
-		/*TYPE_MAP.put("ArenaGuard", ArenaGuard.class);
+		TYPE_MAP.put("ArenaGuard", ArenaGuard.class);
 		TYPE_MAP.put("ArenaPortal", ArenaPortal.class);
-		TYPE_MAP.put("CaveWall", CaveWall.class);*/
+		TYPE_MAP.put("CaveWall", CaveWall.class);
 		TYPE_MAP.put("Character", Character.class);
-		TYPE_MAP.put("CharacterChanger", CharacterChanger.class);/*
+		TYPE_MAP.put("CharacterChanger", CharacterChanger.class);
 		TYPE_MAP.put("ClosedGiftChest", ClosedGiftChest.class);
 		TYPE_MAP.put("ClosedVaultChest", ClosedVaultChest.class);
-		TYPE_MAP.put("ConnectedWall", ConnectedWall.class);*/
+		TYPE_MAP.put("ConnectedWall", ConnectedWall.class);
 		TYPE_MAP.put("Container", Container.class);
-		/*TYPE_MAP.put("DoubleWall", DoubleWall.class);
+		TYPE_MAP.put("DoubleWall", DoubleWall.class);
 		TYPE_MAP.put("FortuneGround", FortuneGround.class);
-		TYPE_MAP.put("FortuneTeller", FortuneTeller);*/
+		TYPE_MAP.put("FortuneTeller", FortuneTeller.class);
 		TYPE_MAP.put("GameObject", GameObject.class);
-		/*TYPE_MAP.put("GuildBoard", GuildBoard.class);
-		TYPE_MAP.put("GuildChronicle", GuildChronicle.class);*/
-		//TYPE_MAP.put("GuildHallPortal", GuildHallPortal.class);
-		/*TYPE_MAP.put("GuildMerchant", GuildMerchant.class);
-		TYPE_MAP.put("GuildRegister", GuildRegister.class);*/
-		//TYPE_MAP.put("Merchant", Merchant.class);
-		//TYPE_MAP.put("MoneyChanger", MoneyChanger.class);
-		//TYPE_MAP.put("MysteryBoxGround", MysteryBoxGround.class);
-		//TYPE_MAP.put("NameChanger", NameChanger.class);
-		/*TYPE_MAP.put("ReskinVendor", ReskinVendor.class);
-		TYPE_MAP.put("OneWayContainer", OneWayContainer.class);*/
+		TYPE_MAP.put("GuildBoard", GuildBoard.class);
+		TYPE_MAP.put("GuildChronicle", GuildChronicle.class);
+		TYPE_MAP.put("GuildHallPortal", GuildHallPortal.class);
+		TYPE_MAP.put("GuildMerchant", GuildMerchant.class);
+		TYPE_MAP.put("GuildRegister", GuildRegister.class);
+		TYPE_MAP.put("Merchant", Merchant.class);
+		TYPE_MAP.put("MoneyChanger", MoneyChanger.class);
+		TYPE_MAP.put("MysteryBoxGround", MysteryBoxGround.class);
+		TYPE_MAP.put("NameChanger", NameChanger.class);
+		TYPE_MAP.put("ReskinVendor", ReskinVendor.class);
+		TYPE_MAP.put("OneWayContainer", OneWayContainer.class);
 		TYPE_MAP.put("Player", Player.class);
 		TYPE_MAP.put("Portal", Portal.class);
 		TYPE_MAP.put("Projectile", Projectile.class);
-		/*TYPE_MAP.put("QuestRewards", QuestRewards.class);
+		TYPE_MAP.put("QuestRewards", QuestRewards.class);
 		TYPE_MAP.put("DailyLoginRewards", DailyLoginRewards.class);
 		TYPE_MAP.put("Sign", Sign.class);
 		TYPE_MAP.put("SpiderWeb", SpiderWeb.class);
-		TYPE_MAP.put("Stalagmite", Stalagmite.class);*/
+		TYPE_MAP.put("Stalagmite", Stalagmite.class);
 		TYPE_MAP.put("Wall", Wall.class);
 		TYPE_MAP.put("Pet", Pet.class);
-		/*TYPE_MAP.put("PetUpgrader", PetUpgrader.class);
-		TYPE_MAP.put("YardUpgrader", YardUpgrader.class);*/
+		TYPE_MAP.put("PetUpgrader", PetUpgrader.class);
+		TYPE_MAP.put("YardUpgrader", YardUpgrader.class);
 	}
 
 	public static void parseDungeonXML(String param1, XML objectXML) {

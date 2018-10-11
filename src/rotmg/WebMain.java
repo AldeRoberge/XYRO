@@ -31,7 +31,7 @@ public class WebMain {
 		boolean isFromArena = false;
 		boolean isNewGame = true;
 
-		RealmClient g = new RealmClient(i, server, Parameters.NEXUS_GAMEID, createCharacter, i.currentCharId, keyTime, key, isNewGame, isFromArena);
+		GameSprite g = new GameSprite(i, server, Parameters.NEXUS_GAMEID, createCharacter, i.currentCharId, keyTime, key, isNewGame, isFromArena);
 
 	}
 
