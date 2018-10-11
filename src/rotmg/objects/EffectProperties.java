@@ -46,8 +46,8 @@ public class EffectProperties {
 		this.rise = xml.getDoubleAttribute("rise", 3F);
 		this.riseVariance = xml.getDoubleAttribute("riseVariance", 0F);
 		this.riseAcc = xml.getDoubleAttribute("riseAcc", 0F);
-		this.rangeX = xml.getIntAttribute("rangeX", 0);
-		this.rangeY = xml.getIntAttribute("rangeY", 0);
+		this.rangeX = (int) xml.getDoubleAttribute("rangeX", 0);
+		this.rangeY = (int) xml.getDoubleAttribute("rangeY", 0);
 		this.zOffset = xml.getDoubleAttribute("zOffset", 0F);
 		this.minRadius = xml.getDoubleAttribute("minRadius", 0F);
 		this.maxRadius = xml.getDoubleAttribute("maxRadius", 1F);

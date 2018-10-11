@@ -21,6 +21,8 @@ import org.xml.sax.SAXException;
  */
 public class XML {
 
+	public static boolean showErrors = false;
+
 	public Element element;
 
 	public XML(Element el) {
@@ -157,7 +159,7 @@ public class XML {
 		int value = getIntValue(tag, -1);
 
 		if (value == -1) {
-			System.err.println("Error : Could not get boolean value '" + tag + "' from int value.");
+			debug("Could not get boolean value '" + tag + "' from int value.");
 			return defaultValue;
 		} else if (value == 1) {
 			return false;
@@ -174,8 +176,7 @@ public class XML {
 		try {
 			return hexToInt(checkIfHasZero(getValue(tag)));
 		} catch (Exception e) {
-			System.err.println(
-					e.getMessage() + " with getting integer value " + tag + ", returning " + defaultValue + ".");
+			debug(e.getMessage() + " with getting integer value " + tag + ", returning " + defaultValue + ".");
 			return defaultValue;
 		}
 	}
@@ -196,8 +197,7 @@ public class XML {
 		try {
 			return hexToInt(checkIfHasZero(getAttribute(name)));
 		} catch (Exception e) {
-			System.err.println(
-					e.getMessage() + " with getting double attribute '" + name + "', returning " + defaultValue + ".");
+			debug(e.getMessage() + " with getting int attribute '" + name + "', returning " + defaultValue + ".");
 			return defaultValue;
 		}
 	}
@@ -210,9 +210,7 @@ public class XML {
 	 * Utility method to allow
 	 * <p>
 	 * xml.@attribute || Number(0)
-	 * <p>
 	 * to be replaced by
-	 * <p>
 	 * xml.getDoubleAttribute("attribute", 0)
 	 */
 	public double getDoubleAttribute(String name, double defaultValue) {
@@ -222,10 +220,15 @@ public class XML {
 			try {
 				return Double.parseDouble(checkIfHasZero(getAttribute(name)));
 			} catch (Exception a) {
-				System.err.println(a.getMessage() + " with getting double attribute " + name + ", returning "
-						+ defaultValue + "F.");
+				debug(a.getMessage() + " with getting double attribute " + name + ", returning " + defaultValue + "F.");
 				return defaultValue;
 			}
+		}
+	}
+
+	private void debug(String string) {
+		if (showErrors) {
+			System.err.println(string);
 		}
 	}
 

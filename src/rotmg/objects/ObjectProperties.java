@@ -111,9 +111,7 @@ public class ObjectProperties {
 		for (XML projectile : param1.children("Projectile")) {
 			this.projectiles.put(projectile.getIntAttribute("id"), new ProjectileProperties(projectile));
 		}
-		this.angleCorrection = param1.hasOwnProperty("AngleCorrection")
-				? (double) (param1.getDoubleValue("AngleCorrection") * Math.PI / 4)
-				: 0;
+		this.angleCorrection = param1.hasOwnProperty("AngleCorrection") ? (double) (param1.getDoubleValue("AngleCorrection") * Math.PI / 4) : 0;
 
 		this.rotation = param1.hasOwnProperty("Rotation") ? param1.getDoubleValue("Rotation") : 0;
 
@@ -131,7 +129,7 @@ public class ObjectProperties {
 			if (this.sounds == null) {
 				this.sounds = new Dictionary<>();
 			}
-			this.sounds.put(loc.getIntAttribute("id"), loc.element.getNodeValue());
+			this.sounds.put(loc.getIntAttribute("type"), loc.element.getNodeValue());
 		}
 
 		if (param1.hasOwnProperty("Portrait")) {
@@ -160,13 +158,9 @@ public class ObjectProperties {
 		return this.minSize + (int) (Math.random() * size) * this.sizeStep;
 	}
 
-
 	@Override
 	public String toString() {
-		return "ObjectProperties{" +
-				"type=" + type +
-				", id='" + id + '\'' +
-				'}';
+		return "ObjectProperties{" + "type=" + type + ", id='" + id + '\'' + '}';
 	}
 }
 
