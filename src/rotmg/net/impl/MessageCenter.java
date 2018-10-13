@@ -14,17 +14,6 @@ public class MessageCenter implements MessageMap, MessageProvider {
 	private static MessageCenter instance;
 	private final Dictionary<Integer, MessageCenterMapping> maps = new Dictionary<>(MAXID);
 
-	public MessageCenter() {
-		super();
-	}
-
-	public static MessageCenter getInstance() {
-		if (instance == null) {
-			instance = new MessageCenter();
-		}
-		return instance;
-	}
-
 	public MessageMapping map(int param1) {
 		if (this.maps.get(param1) == null) {
 			this.maps.put(param1, this.makeMapping(param1));

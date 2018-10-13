@@ -258,11 +258,5 @@ public class PlayerModel {
 		charList = param1;
 	}
 
-	public boolean isNewToEditing() {
-		if (charList != null && !charList.isFirstTimeLogin()) {
-			return false;
-		}
-		return true;
-	}
 
 }

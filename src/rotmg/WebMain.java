@@ -1,7 +1,10 @@
 package rotmg;
 
+import accountdb.AccountDatabaseController;
+import alde.flash.utils.XML;
 import oryx2D.Window;
 import rotmg.account.core.Account;
+import rotmg.account.core.services.AppEngine;
 import rotmg.core.model.PlayerModel;
 import rotmg.net.Server;
 import rotmg.parameters.Parameters;
@@ -13,17 +16,29 @@ public class WebMain {
 	// Following is a loose implementation of PlayGameCommand's makeGameView
 	public static void main(String[] args) {
 
+		//Start Oryx2D
 		Window.main(null);
 
+		//Load assets
 		new AssetLoader().load();
 
-		Account account = new Account("clevertonx@gmail.com", "harryporco1");
+		//Bootstrap servers
+		Servers.getInstance().makeListOfServers(new XML(AppEngine.getCharListAsString()));
+
+		//Launch bots
+		Server useast2 = Servers.getInstance().getServerByName("USEast2");
+
+		connectNewBot(useast2, AccountDatabaseController.getAccount());
+		connectNewBot(useast2, AccountDatabaseController.getAccount());
+
+	}
+
+	private static void connectNewBot(Server server, Account account) {
 
 		PlayerModel i = new PlayerModel(account);
 		i.currentCharId = i.charList.savedChars.get(0).charId();
 
 		i.setIsAgeVerified(true);
-		Server server = Servers.getInstance().getServerByName("USEast2");
 
 		boolean createCharacter = false;
 		int keyTime = -1;

@@ -97,8 +97,6 @@ public class SavedCharactersList {
 
 		XML charList = new XML(charListString);
 
-		Servers.getInstance().makeListOfServers(charList);
-
 		if (charList.hasOwnProperty("Error")) {
 			System.err.println("Error : " + charList.toString());
 			String error = charList.child("Error").toString();

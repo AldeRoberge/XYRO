@@ -10,15 +10,20 @@ import rotmg.appengine.SavedCharactersList;
 
 public class AppEngine {
 
-	public static final String URL = "http://www.realmofthemadgod.appspot.com/";
-	public static final String CHAR_LIST = "char/list";
-
 	public static final String getCharListAsString(Account account) {
 		return getWebsite(getCharListURL(account));
 	}
 
+	public static final String getCharListAsString() {
+		return getWebsite(getCharListURL());
+	}
+
 	public static final String getCharListURL(Account account) {
-		return URL + CHAR_LIST + "?guid=" + account.getUserId() + "&password=" + account.getPassword();
+		return getCharListURL() + "?guid=" + account.getUserId() + "&password=" + account.getPassword();
+	}
+
+	public static final String getCharListURL() {
+		return "http://www.realmofthemadgod.appspot.com/char/list";
 	}
 
 	public static final String getWebsite(String url) {

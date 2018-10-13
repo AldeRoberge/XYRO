@@ -17,7 +17,7 @@ public class Account {
 	public boolean rememberMe = true;
 	public String paymentProvider = "";
 	public String paymentData = "";
-	public String userId = "";
+	public String userId = ""; // Email
 	public String password = "";
 	public String token = "";
 	public String secret = "";
@@ -164,6 +164,11 @@ public class Account {
 
 	public void setPaymentData(String param1) {
 		this.paymentData = param1;
+	}
+
+	@Override
+	public String toString() {
+		return "Email : " + userId + ", Password : " + password;
 	}
 
 }

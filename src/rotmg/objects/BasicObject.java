@@ -87,8 +87,6 @@ public class BasicObject {
 	}
 
 	public void removeFromMap() {
-		System.out.println("Removed from map!");
-		
 		this.map = null;
 		this.square = null;
 	}

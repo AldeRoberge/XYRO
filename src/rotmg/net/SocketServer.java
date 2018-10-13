@@ -26,7 +26,6 @@ public class SocketServer {
 
 	public static SocketServer instance;
 	public static int MESSAGE_LENGTH_SIZE_IN_BYTES = 4;
-	public MessageCenter messages = MessageCenter.getInstance();
 	public Socket socket = null;
 	public long lastTimePacketReceived = 0;
 	public long lastPingTime = 0;
@@ -43,12 +42,10 @@ public class SocketServer {
 	private byte[] buffer = new byte[100000];
 	private BlockingDeque<Message> packetQueue = new LinkedBlockingDeque<Message>();
 
-	public static SocketServer getInstance() {
-		if (instance == null) {
-			instance = new SocketServer();
-		}
-
-		return instance;
+	MessageCenter messages;
+	
+	public SocketServer(MessageCenter messageCenter) {
+		this.messages = messageCenter;
 	}
 
 	public SocketServer setOutgoingCipher(ICipher param1) {

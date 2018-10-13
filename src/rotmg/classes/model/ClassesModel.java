@@ -64,11 +64,11 @@ public class ClassesModel {
 	}
 
 	private CharacterClass makeCharacterClass() {
-		CharacterClass _loc1 = new CharacterClass();
-		_loc1.selected.add(new SignalConsumer<CharacterClass>(this::onClassSelected));
-		this.classes.add(_loc1);
+		CharacterClass character = new CharacterClass();
+		character.selected.add(new SignalConsumer<CharacterClass>(this::onClassSelected));
+		this.classes.add(character);
 		this.count = this.classes.size();
-		return _loc1;
+		return character;
 	}
 
 	private void onClassSelected(CharacterClass param1) {

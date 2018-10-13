@@ -14,7 +14,6 @@ import rotmg.messaging.data.StatData;
 import rotmg.objects.animation.AnimationsData;
 import rotmg.util.ConversionUtil;
 
-
 /**
  * This is 80% complete
  * <p>
@@ -36,8 +35,8 @@ public class ObjectLibrary {
 	public static final Dictionary<Object, Object> skinSetXMLDataLibrary = new Dictionary<>();
 	public static final Dictionary dungeonToPortalTextureData = new Dictionary();
 	public static final Dictionary<String, Dictionary<Integer, XML>> dungeonsXMLLibrary = new Dictionary<>();
-	public static final String ENEMY_FILTER_LIST[] = new String[]{"None", "Hp", "Defense"};
-	public static final String TILE_FILTER_LIST[] = new String[]{"ALL", "Walkable", "Unwalkable", "Slow", "Speed=1"};
+	public static final String ENEMY_FILTER_LIST[] = new String[] { "None", "Hp", "Defense" };
+	public static final String TILE_FILTER_LIST[] = new String[] { "ALL", "Walkable", "Unwalkable", "Slow", "Speed=1" };
 	public static final ObjectProperties defaultProps = new ObjectProperties(null);
 	public static TextureDataFactory textureDataFactory = new TextureDataFactory();
 	public static Vector<XML> playerChars = new Vector<XML>();
@@ -206,10 +205,9 @@ public class ObjectLibrary {
 			e.printStackTrace();
 		}
 
-		/**
-		 * Things get funky here.
-		 * We're not using reflection here.
-		 */
+		if (objectXML == null) {
+			System.out.println("Error : objectXML is null. Type : " + param1);
+		}
 
 		Class typeClass;
 
@@ -225,15 +223,14 @@ public class ObjectLibrary {
 
 			try {
 				return (GameObject) typeClass.getDeclaredConstructor(cArg).newInstance(objectXML);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
 			}
 		} else {
 			System.out.println("Error with creating class " + typeReference + "...");
 		}
 
-		System.err.println("Error with instantiation of object class '" + typeReference + "', '" + typeClass + "'.");
+		System.err.println("IMPORTANT : Error with instantiation of object class '" + typeReference + "', '" + typeClass + "'.");
 
 		return null;
 	}
@@ -375,24 +372,24 @@ public class ObjectLibrary {
 		if (reqXML.toString().equals("Stat")) {
 			val = reqXML.getIntAttribute("value");
 			switch (reqXML.getIntAttribute("stat")) {
-				case StatData.MAX_HP_STAT:
-					return player.maxHP >= val;
-				case StatData.MAX_MP_STAT:
-					return player.maxMP >= val;
-				case StatData.LEVEL_STAT:
-					return player.level >= val;
-				case StatData.ATTACK_STAT:
-					return player.attack >= val;
-				case StatData.DEFENSE_STAT:
-					return player.defense >= val;
-				case StatData.SPEED_STAT:
-					return player.speed >= val;
-				case StatData.VITALITY_STAT:
-					return player.vitality >= val;
-				case StatData.WISDOM_STAT:
-					return player.wisdom >= val;
-				case StatData.DEXTERITY_STAT:
-					return player.dexterity >= val;
+			case StatData.MAX_HP_STAT:
+				return player.maxHP >= val;
+			case StatData.MAX_MP_STAT:
+				return player.maxMP >= val;
+			case StatData.LEVEL_STAT:
+				return player.level >= val;
+			case StatData.ATTACK_STAT:
+				return player.attack >= val;
+			case StatData.DEFENSE_STAT:
+				return player.defense >= val;
+			case StatData.SPEED_STAT:
+				return player.speed >= val;
+			case StatData.VITALITY_STAT:
+				return player.vitality >= val;
+			case StatData.WISDOM_STAT:
+				return player.wisdom >= val;
+			case StatData.DEXTERITY_STAT:
+				return player.dexterity >= val;
 			}
 		}
 		return false;
