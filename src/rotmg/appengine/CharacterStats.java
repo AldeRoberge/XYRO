@@ -8,7 +8,6 @@ public class CharacterStats {
 	public XML charStatsXML;
 
 	public CharacterStats(XML param1) {
-		super();
 		this.charStatsXML = param1;
 	}
 

@@ -20,6 +20,20 @@ import rotmg.account.core.Account;
  */
 public class AccountDatabaseController {
 
+	public static void main(String[] args) {
+
+		System.out.println("Exporting mules to muledump format : ");
+
+		for (Account a : accounts) {
+
+			//'email': 'pass',
+
+			System.out.println("'" + a.userId + "': '" + a.password + "',");
+
+		}
+
+	}
+
 	private static List<Account> accounts = new ArrayList<Account>();
 
 	static {
@@ -34,8 +48,8 @@ public class AccountDatabaseController {
 		return accounts.remove(0);
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Testing... Get account : " + getAccount());
+	public static List<Account> getAccounts() {
+		return accounts;
 	}
 
 	@Test

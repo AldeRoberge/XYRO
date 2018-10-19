@@ -29,18 +29,23 @@ public class WebMain {
 		Server useast2 = Servers.getInstance().getServerByName("USEast2");
 
 		connectNewBot(useast2, AccountDatabaseController.getAccount());
-		connectNewBot(useast2, AccountDatabaseController.getAccount());
 
 	}
 
 	private static void connectNewBot(Server server, Account account) {
 
 		PlayerModel i = new PlayerModel(account);
-		i.currentCharId = i.charList.savedChars.get(0).charId();
+
+		boolean createCharacter = false;
+
+		if (i.charList.savedChars.size() > 0) {
+			i.currentCharId = i.charList.savedChars.get(0).charId();
+		} else {
+			createCharacter = true;
+		}
 
 		i.setIsAgeVerified(true);
 
-		boolean createCharacter = false;
 		int keyTime = -1;
 		byte[] key = new byte[0];
 		boolean isFromArena = false;

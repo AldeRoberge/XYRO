@@ -11,12 +11,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import com.hurlant.crypto.symmetric.ICipher;
 
-import rotmg.GameSprite;
-import rotmg.messaging.GameServerConnectionConcrete;
 import rotmg.net.impl.Message;
 import rotmg.net.impl.MessageCenter;
-import rotmg.parameters.Parameters;
-import rotmg.util.AssetLoader;
 
 /**
  * This class is a very loose implementation of WildShadow's SocketServer,

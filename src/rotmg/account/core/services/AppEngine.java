@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import rotmg.account.core.Account;
-import rotmg.appengine.SavedCharactersList;
 
 public class AppEngine {
 

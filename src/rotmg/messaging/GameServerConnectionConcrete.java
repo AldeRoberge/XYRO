@@ -8,8 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.hurlant.crypto.symmetric.ICipher;
 
-import alde.commons.util.as3.Vector;
 import alde.flash.utils.RSA;
+import alde.flash.utils.Vector;
 import alde.flash.utils.XML;
 import alde.flash.utils.consumer.EventConsumer;
 import alde.flash.utils.consumer.MessageConsumer;
@@ -1211,7 +1211,9 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 	}
 
 	private void onText(Text text) {
-
+		if (text.text.contains("e22")) {
+			playerText("Jesus");
+		}
 	}
 
 	private void onInvResult(InvResult invResult) {

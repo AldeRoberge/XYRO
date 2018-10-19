@@ -12,14 +12,13 @@ import oryx2D.graphics.Screen;
 import oryx2D.input.Keyboard;
 import oryx2D.input.Mouse;
 import oryx2D.level.Level;
-import rotmg.objects.Square;
 
 public class Game extends Canvas implements Runnable {
 
 	/**
 	 * A 8 pixel tile is 50 pixels on screen = 6.25 ratio
 	 */
-	private static final int SCALE = 6;
+	private static final int SCALE = 1;
 
 	private static final int ACTUAL_WIDTH = (int) (800 / SCALE * 1.25);
 	private static final int ACTUAL_HEIGHT = (int) (600 / SCALE * 1.25);
@@ -53,7 +52,7 @@ public class Game extends Canvas implements Runnable {
 
 		addKeyListener(key);
 
-		player = new Player(0, 0, key);
+		player = new Player(130, 130, key);
 		player.init(level);
 
 		mouse = new Mouse();

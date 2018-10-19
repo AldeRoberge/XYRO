@@ -3,6 +3,7 @@ package rotmg.core.model;
 import org.osflash.signals.Signal;
 
 import alde.flash.utils.Vector;
+import alde.flash.utils.XML;
 import rotmg.account.core.Account;
 import rotmg.account.core.services.AppEngine;
 import rotmg.appengine.SavedCharacter;
@@ -31,9 +32,44 @@ public class PlayerModel {
 		this.account = account;
 
 		this.petsModel = new PetsModel(this);
-		charList = new SavedCharactersList(this);
+		charList = new SavedCharactersList(getCharList());
 
 		this.isInvalidated = true;
+	}
+
+	private XML getCharList() {
+
+		String charListString = AppEngine.getCharListAsString(account);
+
+		System.out.println("Char list string : " + charListString);
+
+		XML charList = new XML(charListString);
+
+		if (charList.hasOwnProperty("Error")) {
+			System.err.println("Error : " + charList.toString());
+			String error = charList.child("Error").toString();
+
+			if (error.equals("Account credentials not valid")) {
+				System.err.println("Wrong credentials!");
+			} else if (error.equals("Account is under maintenance")) {
+				System.err.println("This account has been banned");
+			}
+
+			System.err.println("Error : " + error);
+
+		} else if (charList.hasOwnProperty("MigrateStatus")) {
+			System.err.println("Account requires migration!");
+		} else {
+			if (charList.hasOwnProperty("Account")) {
+				account.userDisplayName = charList.child("Account").getValue("Name");
+				account.paymentProvider = charList.child("Account").getValue("PaymentProvider");
+				if (charList.child("Account").hasOwnProperty("PaymentData")) {
+					account.paymentData = charList.child("Account").getValue("PaymentData");
+				}
+			}
+		}
+
+		return new XML(charListString);
 	}
 
 	public int getCurrentCharId() {
@@ -257,6 +293,5 @@ public class PlayerModel {
 	public void setCharacterList(SavedCharactersList param1) {
 		charList = param1;
 	}
-
 
 }

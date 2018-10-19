@@ -10,7 +10,6 @@ import rotmg.net.LatLong;
 import rotmg.objects.ObjectLibrary;
 import rotmg.objects.Player;
 import rotmg.pets.data.PetsModel;
-import rotmg.xyro.Servers;
 
 /**
  * CharacterList
@@ -55,24 +54,19 @@ public class SavedCharactersList {
 	public boolean hasPlayerDied = false;
 	public Dictionary<Integer, String> classAvailability;
 	public boolean isAgeVerified;
-	private String origData;
 	private XML charsXML;
 	private Account account;
 
-	public SavedCharactersList(PlayerModel playerModel) {
-		account = playerModel.account;
-
-		String charListString = getCharList();
+	public SavedCharactersList(XML charsXML) {
 
 		this.savedChars = new Vector<SavedCharacter>();
 		this.charStats = new Dictionary<>();
 		this.news = new Vector<SavedNewsItem>();
-		this.origData = charListString;
-		this.charsXML = new XML(this.origData);
+		this.charsXML = charsXML;
 		XML loc2 = this.charsXML.child("Account");
 		this.parseUserData(loc2);
 		this.parseGuildData(loc2);
-		this.parseCharacterData(playerModel.petsModel);
+		this.parseCharacterData();
 		this.parseCharacterStatsData();
 		this.parseNewsData();
 		this.parseGeoPositioningData();
@@ -87,41 +81,6 @@ public class SavedCharactersList {
 		for (XML loc4 : this.charsXML.child("ClassAvailabilityList").children("ClassAvailability")) {
 			this.classAvailability.put(loc4.getIntAttribute("id"), loc4.toString());
 		}
-	}
-
-	private String getCharList() {
-
-		String charListString = AppEngine.getCharListAsString(account);
-
-		System.out.println("Char list string : " + charListString);
-
-		XML charList = new XML(charListString);
-
-		if (charList.hasOwnProperty("Error")) {
-			System.err.println("Error : " + charList.toString());
-			String error = charList.child("Error").toString();
-
-			if (error.equals("Account credentials not valid")) {
-				System.err.println("Wrong credentials!");
-			} else if (error.equals("Account is under maintenance")) {
-				System.err.println("This account has been banned");
-			}
-
-			System.err.println("Error : " + error);
-
-		} else if (charList.hasOwnProperty("MigrateStatus")) {
-			System.err.println("Account requires migration!");
-		} else {
-			if (charList.hasOwnProperty("Account")) {
-				account.userDisplayName = charList.child("Account").getValue("Name");
-				account.paymentProvider = charList.child("Account").getValue("PaymentProvider");
-				if (charList.child("Account").hasOwnProperty("PaymentData")) {
-					account.paymentData = charList.child("Account").getValue("PaymentData");
-				}
-			}
-		}
-
-		return charListString;
 	}
 
 	public SavedCharacter getCharById(int param1) {
@@ -161,11 +120,11 @@ public class SavedCharactersList {
 		}
 	}
 
-	private void parseCharacterData(PetsModel petsmodel) {
+	private void parseCharacterData() {
 		this.nextCharId = this.charsXML.getIntAttribute("nextCharId");
 		this.maxNumChars = this.charsXML.getIntAttribute("maxNumChars");
 		for (XML loc1 : this.charsXML.children("Char")) {
-			this.savedChars.add(new SavedCharacter(loc1, this.name, petsmodel));
+			this.savedChars.add(new SavedCharacter(loc1, this.name));
 			this.numChars++;
 		}
 		//this.savedChars.sort(SavedCharacter.compare);
