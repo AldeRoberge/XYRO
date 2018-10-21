@@ -30,6 +30,7 @@ import rotmg.appengine.SavedCharacter;
 import rotmg.appengine.SavedCharactersList;
 import rotmg.objects.ObjectLibrary;
 import rotmg.util.AssetLoader;
+import javax.swing.JCheckBoxMenuItem;
 
 public class UI extends JFrame {
 
@@ -45,6 +46,7 @@ public class UI extends JFrame {
 	public boolean isRunning = false;
 
 	List<CachedAccount> cachedAccounts = new ArrayList<>();
+	private JCheckBoxMenuItem chckbxmntmOnlyTradeable;
 
 	public void addItem(Item item) {
 
@@ -157,18 +159,23 @@ public class UI extends JFrame {
 		menuBar.add(mnEdit);
 
 		JMenuItem menuItem = new JMenuItem(new AbstractAction("Sort") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				itemCollectionsPanel.removeAll();
-
-				Collections.sort(itemCollections, new ItemCollectionComparator());
-
-				for (ItemCollection i : itemCollections) {
-					itemCollectionsPanel.add(i.itemPanel);
-				}
-
+				sort();
 			}
+
 		});
 		mnEdit.add(menuItem);
+
+		chckbxmntmOnlyTradeable = new JCheckBoxMenuItem(new AbstractAction("Only tradeable") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sort();
+			}
+
+		});
+
+		mnEdit.add(chckbxmntmOnlyTradeable);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -198,13 +205,41 @@ public class UI extends JFrame {
 
 	}
 
+	private void sort() {
+
+		System.out.println("Action performed");
+
+		itemCollectionsPanel.removeAll();
+
+		Collections.sort(itemCollections, new ItemCollectionComparator());
+
+		for (ItemCollection i : itemCollections) {
+
+			if (filter(i)) {
+				itemCollectionsPanel.add(i.itemPanel);
+			}
+
+		}
+
+		itemCollectionsPanel.revalidate();
+		itemCollectionsPanel.repaint();
+	}
+
+	/**
+	 * True if item should be displayed
+	 */
+	private boolean filter(ItemCollection i) {
+
+		if (chckbxmntmOnlyTradeable.isSelected()) {
+			return !i.item.isSoulbound;
+		}
+
+		return true;
+	}
+
 	public void parseAccounts() {
 
-		int total = 0;
-
 		for (CachedAccount c : AccountDatabaseController.getCachedAccounts()) {
-
-			total++;
 
 			if (c.charList.contains("<Account>")) {
 
@@ -219,12 +254,7 @@ public class UI extends JFrame {
 					for (SavedCharacter savedChar : s.savedChars) {
 						for (int i : savedChar.getInventory()) {
 
-							BitmapData texture = ObjectLibrary.getTextureFromType(i);
-							Image imgSmall = null;
-							if (texture != null) {
-								imgSmall = texture.image.getScaledInstance(25, 25, Image.SCALE_FAST);
-							}
-							Item item = new Item(i, imgSmall, ObjectLibrary.getIdFromType(i));
+							Item item = new Item(i);
 
 							addItem(item);
 							c.addItem(i);
@@ -237,13 +267,11 @@ public class UI extends JFrame {
 				} catch (Exception e) {
 					e.printStackTrace();
 
-					if (DEBUG) {
-
-						if (total > 3) {
-							break; // TODO remove this for debugging
-						}
-
-					}
+					/*if (DEBUG) {
+					
+						break; // TODO remove this for debugging
+					
+					}*/
 
 				}
 			} else {
@@ -253,15 +281,6 @@ public class UI extends JFrame {
 		}
 
 		System.out.println("Ended.");
-
-	}
-
-	class ItemCollectionComparator implements Comparator<ItemCollection> {
-
-		@Override
-		public int compare(ItemCollection a, ItemCollection b) {
-			return a.item.type < b.item.type ? -1 : a.item.type == b.item.type ? 0 : 1;
-		}
 
 	}
 
