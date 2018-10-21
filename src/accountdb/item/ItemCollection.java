@@ -1,17 +1,18 @@
-package accountdb.ui;
+package accountdb.item;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import accountdb.ui.Item;
 import flash.display.BitmapData;
 import rotmg.objects.ObjectLibrary;
 
 public class ItemCollection {
 
-	Item item;
-	ItemCollectionPanel itemPanel;
+	public Item item;
+	public ItemCollectionPanel itemPanel;
 
 	int amount = 0;
 

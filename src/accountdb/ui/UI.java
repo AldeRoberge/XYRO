@@ -3,14 +3,13 @@ package accountdb.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,14 +22,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import accountdb.AccountDatabaseController;
+import accountdb.item.ItemCollection;
+import accountdb.item.ItemCollectionComparator;
 import alde.commons.util.WrapLayout;
 import alde.flash.utils.XML;
-import flash.display.BitmapData;
 import rotmg.appengine.SavedCharacter;
 import rotmg.appengine.SavedCharactersList;
 import rotmg.objects.ObjectLibrary;
 import rotmg.util.AssetLoader;
-import javax.swing.JCheckBoxMenuItem;
 
 public class UI extends JFrame {
 

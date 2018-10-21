@@ -7,10 +7,10 @@ import rotmg.objects.ObjectLibrary;
 
 public class Item {
 
-	int type;
-	Image image;
-	String id;
-	boolean isSoulbound;
+	public int type;
+	public Image image;
+	public String id;
+	public boolean isSoulbound;
 
 	public Item(int type) {
 		this.type = type;

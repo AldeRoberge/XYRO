@@ -1,4 +1,4 @@
-package accountdb.ui;
+package accountdb.item;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -100,7 +100,7 @@ public class ItemCollectionPanel extends JPanel {
 
 	}
 
-	void registerMouseClickListener(Runnable runnable) {
+	public void registerMouseClickListener(Runnable runnable) {
 		panel.addMouseListener(new MouseListener() {
 
 			@Override
