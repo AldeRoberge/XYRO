@@ -1,5 +1,9 @@
 package rotmg.appengine;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import alde.flash.utils.Vector;
 import alde.flash.utils.XML;
 import rotmg.constants.GeneralConstants;
 import rotmg.objects.ObjectLibrary;
@@ -7,6 +11,7 @@ import rotmg.objects.Player;
 import rotmg.parameters.Parameters;
 import rotmg.pets.data.PetVO;
 import rotmg.pets.data.PetsModel;
+import rotmg.util.ConversionUtil;
 
 public class SavedCharacter {
 
@@ -22,21 +27,17 @@ public class SavedCharacter {
 		PetVO loc5 = null;
 		this.charXML = param1;
 		this.name = param2;
-		if (this.charXML.hasOwnProperty("Pet")) {
+		/*if (this.charXML.hasOwnProperty("Pet")) {
 			loc3 = this.charXML.child("Pet");
 			loc4 = loc3.getIntAttribute("instanceId");
 			loc5.apply(loc3);
 			this.setPetVO(loc5);
-		}
+		}*/
 	}
 
 	public static double compare(SavedCharacter param1, SavedCharacter param2) {
-		double loc3 = !!Parameters.data.charIdUseMap.hasOwnProperty(param1.charId())
-				? Parameters.data.charIdUseMap.get(param1.charId())
-				: 0F;
-		double loc4 = !!Parameters.data.charIdUseMap.hasOwnProperty(param2.charId())
-				? Parameters.data.charIdUseMap.get(param2.charId())
-				: 0F;
+		double loc3 = !!Parameters.data.charIdUseMap.hasOwnProperty(param1.charId()) ? Parameters.data.charIdUseMap.get(param1.charId()) : 0F;
+		double loc4 = !!Parameters.data.charIdUseMap.hasOwnProperty(param2.charId()) ? Parameters.data.charIdUseMap.get(param2.charId()) : 0F;
 		if (loc3 != loc4) {
 			return loc4 - loc3;
 		}
@@ -149,6 +150,18 @@ public class SavedCharacter {
 
 	public void setPetVO(PetVO param1) {
 		this.pet = param1;
+	}
+
+	//Custom method
+	public Vector<Integer> getInventory() {
+
+		if (charXML.children("Equipment").size() == 0) {
+			System.out.println("No equipment.");
+			return new Vector<Integer>();
+		} else {
+			return ConversionUtil.toIntVector(charXML.getValue("Equipment"));
+		}
+
 	}
 
 }

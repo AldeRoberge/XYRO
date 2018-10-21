@@ -10,34 +10,26 @@ import rotmg.objects.ObjectLibrary;
 
 public class ItemCollection {
 
-	int id; // Item ID
-	int amount; // Amount of Items
-
+	Item item;
 	ItemCollectionPanel itemPanel;
+
+	int amount = 0;
 
 	/**
 	 * Creates an ItemCollection for the specified itemId.
 	 * Sets amount to 1
 	 */
-	public ItemCollection(int id) {
+	public ItemCollection(Item item) {
 
-		this.id = id;
+		this.item = item;
 		this.itemPanel = new ItemCollectionPanel();
 
-		setTexture();
+		if (!(item.image == null)) {
+			this.itemPanel.setIcon(new ImageIcon(item.image));
+		}
 
 		setAmount(1);
 
-	}
-
-	private void setTexture() {
-
-		BitmapData texture = ObjectLibrary.getTextureFromType(id);
-
-		if (texture != null) {
-			Image imgSmall = texture.image.getScaledInstance(50, 50, Image.SCALE_FAST);
-			itemPanel.setIcon(new ImageIcon(imgSmall));
-		}
 	}
 
 	public boolean isSelected() {

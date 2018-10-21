@@ -168,7 +168,11 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Email : " + userId + ", Password : " + password;
+		return "Email : '" + userId + "', Password : '" + password + "'";
+	}
+
+	public boolean contains(String contains) {
+		return userId.toLowerCase().contains(contains.toLowerCase()) || password.toLowerCase().contains(contains.toLowerCase());
 	}
 
 }

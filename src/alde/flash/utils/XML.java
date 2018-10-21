@@ -144,8 +144,26 @@ public class XML {
 	 */
 
 	public String getValue(String tag) {
+
 		return child(tag).element.getTextContent();
-		//return element.getElementsByTagName(tag).item(0).getTextContent();
+		
+		/*
+		
+		try {
+			return child(tag).element.getTextContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			try {
+				return element.getElementsByTagName(tag).item(0).getTextContent();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+
+		}
+
+		return "null";*/
+
 	}
 
 	public boolean getBooleanValue(String tag) {

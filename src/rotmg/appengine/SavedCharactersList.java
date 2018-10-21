@@ -55,7 +55,6 @@ public class SavedCharactersList {
 	public Dictionary<Integer, String> classAvailability;
 	public boolean isAgeVerified;
 	private XML charsXML;
-	private Account account;
 
 	public SavedCharactersList(XML charsXML) {
 
@@ -71,11 +70,6 @@ public class SavedCharactersList {
 		this.parseNewsData();
 		this.parseGeoPositioningData();
 		this.parseSalesForceData();
-
-		account.reportIntStat("BestLevel", this.bestOverallLevel());
-		account.reportIntStat("BestFame", this.bestOverallFame());
-		account.reportIntStat("NumStars", this.numStars);
-		account.verify(loc2.hasOwnProperty("VerifiedEmail"));
 
 		this.classAvailability = new Dictionary<>();
 		for (XML loc4 : this.charsXML.child("ClassAvailabilityList").children("ClassAvailability")) {

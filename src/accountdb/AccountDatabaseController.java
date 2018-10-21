@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import accountdb.ui.CachedAccount;
 import rotmg.account.core.Account;
 
 /**
@@ -50,6 +51,10 @@ public class AccountDatabaseController {
 
 	public static List<Account> getAccounts() {
 		return accounts;
+	}
+
+	public static List<CachedAccount> getCachedAccounts() {
+		return AccountDatabaseService.getCachedAccounts();
 	}
 
 	@Test
@@ -109,6 +114,41 @@ class AccountDatabaseService {
 
 		return accounts;
 
+	}
+
+	public static List<CachedAccount> getCachedAccounts() {
+		List<CachedAccount> cachedAccounts = new ArrayList<>();
+
+		try {
+
+			PreparedStatement myStmt = myConn.prepareStatement("select * from accounts");
+			ResultSet myRs = myStmt.executeQuery();
+
+			while (myRs.next()) {
+
+				String email = myRs.getString("email");
+				String password = myRs.getString("password");
+				String charList = myRs.getString("answer");
+
+				CachedAccount newAccount = new CachedAccount(email, password, charList);
+
+				if (!cachedAccounts.contains(newAccount)) {
+					if (!charList.contains("<AccountId>-1</AccountId>")) {
+						cachedAccounts.add(newAccount);
+					}
+				}
+			}
+
+			System.out.println("Found " + cachedAccounts.size() + " cached accounts.");
+
+			myStmt.close();
+			myRs.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return cachedAccounts;
 	}
 
 }

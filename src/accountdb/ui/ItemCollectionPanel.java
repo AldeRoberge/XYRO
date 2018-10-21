@@ -12,45 +12,95 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import java.awt.FlowLayout;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class ItemCollectionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JLabel quantityLabel;
 	private JLabel iconLabel;
-	private JPanel panel;
 
 	boolean isSelected = false;
+	private JPanel panel;
+	private Component topStrut;
+	private Component rightStrut;
+	private Component leftStrut;
+	private JPanel panel_2;
+	private JPanel quantityPanel;
+	private Component verticalStrut;
+	private Component iconTopStrut;
+	private Component iconLeftStrut;
+	private Component iconRightStrut;
+	private JPanel iconPanel;
 
 	/**
 	 * Create the panel.
 	 */
 	public ItemCollectionPanel() {
+		setBorder(null);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		panel = new JPanel();
+		panel.setBackground(new Color(20, 20, 20));
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 
-		JPanel quantityPanel = new JPanel();
-		panel.add(quantityPanel, BorderLayout.SOUTH);
+		topStrut = Box.createVerticalStrut(5);
+		panel.add(topStrut, BorderLayout.NORTH);
 
-		quantityLabel = new JLabel("Quantity");
-		quantityLabel.setOpaque(false);
-		quantityPanel.add(quantityLabel);
+		rightStrut = Box.createHorizontalStrut(5);
+		panel.add(rightStrut, BorderLayout.EAST);
+
+		leftStrut = Box.createHorizontalStrut(5);
+		panel.add(leftStrut, BorderLayout.WEST);
+
+		iconPanel = new JPanel();
+		iconPanel.setBorder(null);
+		iconPanel.setBackground(new Color(54, 54, 54));
+		iconPanel.setLayout(new BorderLayout());
 
 		iconLabel = new JLabel("Icon");
-		iconLabel.setOpaque(true);
+		iconLabel.setForeground(Color.WHITE);
 		iconLabel.setBackground(Color.WHITE);
-		iconLabel.setForeground(Color.BLACK);
 		iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(iconLabel, BorderLayout.CENTER);
 
-		registerMouseClickListener();
+		iconPanel.add(iconLabel, BorderLayout.CENTER);
+
+		panel.add(iconPanel, BorderLayout.CENTER);
+
+		quantityPanel = new JPanel();
+		FlowLayout fl_quantityPanel = (FlowLayout) quantityPanel.getLayout();
+		fl_quantityPanel.setAlignment(FlowLayout.RIGHT);
+		quantityPanel.setOpaque(false);
+		iconPanel.add(quantityPanel, BorderLayout.SOUTH);
+
+		quantityLabel = new JLabel("Quantity");
+		quantityPanel.add(quantityLabel);
+		quantityLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+		quantityLabel.setForeground(Color.WHITE);
+		quantityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		quantityLabel.setOpaque(false);
+
+		iconTopStrut = Box.createVerticalStrut(5);
+		iconPanel.add(iconTopStrut, BorderLayout.NORTH);
+
+		iconLeftStrut = Box.createHorizontalStrut(5);
+		iconPanel.add(iconLeftStrut, BorderLayout.WEST);
+
+		iconRightStrut = Box.createHorizontalStrut(5);
+		iconPanel.add(iconRightStrut, BorderLayout.EAST);
+
+		verticalStrut = Box.createVerticalStrut(5);
+		panel.add(verticalStrut, BorderLayout.SOUTH);
 
 	}
 
-	private void registerMouseClickListener() {
+	void registerMouseClickListener(Runnable runnable) {
 		panel.addMouseListener(new MouseListener() {
 
 			@Override
@@ -65,6 +115,7 @@ public class ItemCollectionPanel extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				updateIsSelected();
+				runnable.run();
 			}
 
 			@Override
@@ -82,11 +133,9 @@ public class ItemCollectionPanel extends JPanel {
 		isSelected = !isSelected;
 
 		if (isSelected) {
-			iconLabel.setBackground(Color.BLUE);
-			quantityLabel.setForeground(Color.BLUE);
+			iconPanel.setBackground(new Color(100, 80, 34));
 		} else {
-			iconLabel.setBackground(Color.WHITE);
-			quantityLabel.setForeground(Color.BLACK);
+			iconPanel.setBackground(new Color(54, 54, 54));
 		}
 	}
 
@@ -99,6 +148,10 @@ public class ItemCollectionPanel extends JPanel {
 	public ItemCollectionPanel setQuantity(String quantity) {
 		quantityLabel.setText(quantity);
 		return this;
+	}
+
+	public boolean noIcon() {
+		return iconLabel.getIcon() == null;
 	}
 
 }
