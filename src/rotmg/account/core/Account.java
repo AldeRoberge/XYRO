@@ -41,7 +41,7 @@ public class Account {
 	public Account(String email, String password) {
 		this.userId = email;
 		this.password = password;
-		this.secret = password; //TODO whats the difference between secret and password?
+		this.secret = password; //TODO what's the difference between secret and password?
 	}
 
 	public String getUserName() {
@@ -173,6 +173,16 @@ public class Account {
 
 	public boolean contains(String contains) {
 		return userId.toLowerCase().contains(contains.toLowerCase()) || password.toLowerCase().contains(contains.toLowerCase());
+	}
+
+	@Override
+	public boolean equals(Object a) {
+		if (a instanceof Account) {
+			Account aa = (Account) a;
+			return aa.userId.equals(this.userId) && aa.password.equals(this.password);
+		}
+		return false;
+
 	}
 
 }

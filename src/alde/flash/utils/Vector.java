@@ -9,6 +9,9 @@ import java.util.function.BiFunction;
 /**
  * A wrapper for ConcurrentHashMap that simulates AS3's Vector
  * Simulates a List that can be used as <Index, Value>
+ * 
+ * AS3 but it's Java ¯\_(ツ)_/¯
+ * 
  */
 public class Vector<T> implements Iterable<T> {
 

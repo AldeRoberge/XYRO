@@ -26,12 +26,13 @@ import accountdb.item.ItemCollection;
 import accountdb.item.ItemCollectionComparator;
 import alde.commons.util.WrapLayout;
 import alde.flash.utils.XML;
+import ral.DB;
 import rotmg.appengine.SavedCharacter;
 import rotmg.appengine.SavedCharactersList;
 import rotmg.objects.ObjectLibrary;
 import rotmg.util.AssetLoader;
 
-public class UI extends JFrame {
+public class AldumpUI extends JFrame {
 
 	private static final boolean DEBUG = true;
 
@@ -46,74 +47,6 @@ public class UI extends JFrame {
 
 	List<CachedAccount> cachedAccounts = new ArrayList<>();
 	private JCheckBoxMenuItem chckbxmntmOnlyTradeable;
-
-	public void addItem(Item item) {
-
-		boolean exists = false;
-
-		for (ItemCollection i : itemCollections) {
-			if (item.type == i.item.type) {
-				i.incrementAmount();
-				exists = true;
-				break;
-			}
-		}
-
-		if (!exists) {
-			ItemCollection i = new ItemCollection(item);
-
-			if (!i.itemPanel.noIcon()) { // Only add itemPanels with icons
-
-				itemCollections.add(i);
-				itemCollectionsPanel.add(i.itemPanel);
-
-				i.itemPanel.registerMouseClickListener(new Runnable() {
-					@Override
-					public void run() {
-
-						if (!isRunning) {
-							isRunning = true;
-
-							List<CachedAccount> accountsContainingItem = new ArrayList<>();
-
-							System.out.println("Item collections : " + itemCollections.size());
-
-							for (ItemCollection i : itemCollections) {
-								if (i.isSelected()) {
-
-									for (CachedAccount c : cachedAccounts) {
-
-										System.out.println(c.items.size() + " size");
-
-										if (c.items.contains(i.item.type)) {
-											System.out.println("Found accoutn with item");
-
-											if (!accountsContainingItem.contains(c)) {
-												accountsContainingItem.add(c);
-											}
-
-										}
-									}
-
-								}
-							}
-
-							list.setTableData(accountsContainingItem);
-
-							isRunning = false;
-						} else {
-							System.out.println("Is already running...");
-						}
-
-					}
-				});
-			}
-		}
-
-		revalidate();
-		repaint();
-
-	}
 
 	/**
 	 * Launch the application.
@@ -132,8 +65,11 @@ public class UI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UI frame = new UI();
+					AldumpUI frame = new AldumpUI();
 					frame.setVisible(true);
+
+					System.out.println("What's debugging anyway?");
+
 					frame.parseAccounts();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -145,7 +81,7 @@ public class UI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UI() {
+	public AldumpUI() {
 		setTitle("💩 Aldump");
 		setIconImage(ObjectLibrary.getTextureFromType(0x1805).image);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -238,7 +174,9 @@ public class UI extends JFrame {
 
 	public void parseAccounts() {
 
-		for (CachedAccount c : AccountDatabaseController.getCachedAccounts()) {
+		for (CachedAccount c : DB.getCachedAccounts()) {
+
+			System.out.println("Working with account " + c + "...");
 
 			if (c.charList.contains("<Account>")) {
 
@@ -280,6 +218,74 @@ public class UI extends JFrame {
 		}
 
 		System.out.println("Ended.");
+
+	}
+
+	public void addItem(Item item) {
+
+		boolean exists = false;
+
+		for (ItemCollection i : itemCollections) {
+			if (item.type == i.item.type) {
+				i.incrementAmount();
+				exists = true;
+				break;
+			}
+		}
+
+		if (!exists) {
+			ItemCollection i = new ItemCollection(item);
+
+			if (!i.itemPanel.noIcon()) { // Only add itemPanels with icons
+
+				itemCollections.add(i);
+				itemCollectionsPanel.add(i.itemPanel);
+
+				i.itemPanel.registerMouseClickListener(new Runnable() {
+					@Override
+					public void run() {
+
+						if (!isRunning) {
+							isRunning = true;
+
+							List<CachedAccount> accountsContainingItem = new ArrayList<>();
+
+							System.out.println("Item collections : " + itemCollections.size());
+
+							for (ItemCollection i : itemCollections) {
+								if (i.isSelected()) {
+
+									for (CachedAccount c : cachedAccounts) {
+
+										System.out.println(c.items.size() + " size");
+
+										if (c.items.contains(i.item.type)) {
+											System.out.println("Found accoutn with item");
+
+											if (!accountsContainingItem.contains(c)) {
+												accountsContainingItem.add(c);
+											}
+
+										}
+									}
+
+								}
+							}
+
+							list.setTableData(accountsContainingItem);
+
+							isRunning = false;
+						} else {
+							System.out.println("Is already running...");
+						}
+
+					}
+				});
+			}
+		}
+
+		revalidate();
+		repaint();
 
 	}
 

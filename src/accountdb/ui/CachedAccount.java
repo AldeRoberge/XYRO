@@ -5,9 +5,9 @@ import java.util.List;
 
 public class CachedAccount {
 
-	String email;
-	String password;
-	String charList;
+	public String email;
+	public String password;
+	public String charList;
 
 	List<Integer> items = new ArrayList<Integer>();
 
