@@ -1,6 +1,5 @@
 package rotmg;
 
-import accountdb.AccountDatabaseController;
 import alde.flash.utils.XML;
 import oryx2D.Window;
 import rotmg.account.core.Account;
@@ -28,7 +27,7 @@ public class WebMain {
 		//Launch bots
 		Server useast2 = Servers.getInstance().getServerByName("USEast2");
 
-		connectNewBot(useast2, AccountDatabaseController.getAccount());
+		connectNewBot(useast2, new Account("", ""));
 
 	}
 
