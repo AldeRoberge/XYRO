@@ -1,24 +1,20 @@
 package oryx2D;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-
 import oryx2D.entity.mob.Player;
 import oryx2D.graphics.Screen;
 import oryx2D.input.Keyboard;
 import oryx2D.input.Mouse;
 import oryx2D.level.Level;
 
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+
 public class Game extends Canvas implements Runnable {
 
 	/**
 	 * A 8 pixel tile is 50 pixels on screen = 6.25 ratio
 	 */
-	private static final int SCALE = 1;
+	private static final int SCALE = 6;
 
 	private static final int ACTUAL_WIDTH = (int) (800 / SCALE * 1.25);
 	private static final int ACTUAL_HEIGHT = (int) (600 / SCALE * 1.25);

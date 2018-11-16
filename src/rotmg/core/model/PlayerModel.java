@@ -62,7 +62,7 @@ public class PlayerModel {
 		} else {
 			if (charList.hasOwnProperty("Account")) {
 				account.userDisplayName = charList.child("Account").getValue("Name");
-				account.paymentProvider = charList.child("Account").getValue("PaymentProvider");
+				//account.paymentProvider = charList.child("Account").getValue("PaymentProvider");
 				if (charList.child("Account").hasOwnProperty("PaymentData")) {
 					account.paymentData = charList.child("Account").getValue("PaymentData");
 				}

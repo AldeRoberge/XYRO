@@ -156,7 +156,7 @@ public class SavedCharacter {
 	public Vector<Integer> getInventory() {
 
 		if (charXML.children("Equipment").size() == 0) {
-			System.out.println("No equipment.");
+			//System.out.println("No equipment.");
 			return new Vector<Integer>();
 		} else {
 			return ConversionUtil.toIntVector(charXML.getValue("Equipment"));

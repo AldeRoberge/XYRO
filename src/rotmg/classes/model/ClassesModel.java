@@ -1,11 +1,10 @@
 package rotmg.classes.model;
 
-import java.util.ArrayList;
-
-import org.osflash.signals.Signal;
-
 import alde.flash.utils.consumer.SignalConsumer;
 import flash.utils.Dictionary;
+import org.osflash.signals.Signal;
+
+import java.util.ArrayList;
 
 /**
  * The Class selection model for the UI (create new character)
@@ -18,7 +17,7 @@ public class ClassesModel {
 	private ArrayList<CharacterClass> classes = new ArrayList<>();
 	private int count = 0;
 	private CharacterClass selectedChar;
-	private Dictionary<Integer, CharacterClass> map;
+	private Dictionary<Integer, CharacterClass> map = new Dictionary<>();
 
 	public static ClassesModel getInstance() {
 		if (instance == null) {

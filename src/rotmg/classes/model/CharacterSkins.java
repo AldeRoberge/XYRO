@@ -1,10 +1,10 @@
 package rotmg.classes.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import alde.flash.utils.consumer.SignalConsumer;
 import flash.utils.Dictionary;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CharacterSkins {
 
@@ -28,6 +28,11 @@ public class CharacterSkins {
 	}
 
 	public CharacterSkin getSelectedSkin() {
+
+		if (this.selectedSkin == null) { // TODO remove this patch
+			this.selectedSkin = getDefaultSkin();
+		}
+
 		return this.selectedSkin;
 	}
 
