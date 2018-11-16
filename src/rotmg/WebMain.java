@@ -25,9 +25,9 @@ public class WebMain {
 		Servers.getInstance().makeListOfServers(new XML(AppEngine.getCharListAsString()));
 
 		//Launch bots
-		Server useast2 = Servers.getInstance().getServerByName("USEast2");
+		Server server = Servers.getInstance().getServerByName("USWest");
 
-		connectNewBot(useast2, new Account("", ""));
+		connectNewBot(server, new Account("bens.anerd@ymail.com", "fyPYDpeUo1J"));
 
 	}
 
